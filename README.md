@@ -1,4 +1,5 @@
 # ZR Elementor Addon
+Custom addon for elementor and elementor pro.
 
 ## Features
 
