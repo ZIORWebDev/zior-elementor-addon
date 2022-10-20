@@ -4,7 +4,7 @@
  * Description: Custom elementor pro addon, slider, posts widget filters
  * Version: 0.10
  *
- * Text Domain: rws-elementor-addon
+ * Text Domain: zr-elementor
  *
  */
 if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
@@ -36,20 +36,17 @@ if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
 			return self::$_instance;
 		}
 
-		/**
-		 * Only load the addon on the Elementor core hook, ensuring the plugin is active.
-		 */
 		public function run() {
 			add_action( 'init', [ $this, 'init' ] );
 			add_action( 'elementor_pro/init', [ $this, 'elementor_pro_init' ] );
 		}
 
 		public function init() {
-
+			add_action( 'admin_notices', [ $this, 'missing_plugin_notice' ] );
 		}
 		
 		/**
-		 * Get things up and running.
+		 * Only load the addon on the Elementor core hook, ensuring the plugin is active.
 		 */
 		public function elementor_pro_init() {
 			$this->setup_constants();
