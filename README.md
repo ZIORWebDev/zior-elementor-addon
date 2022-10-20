@@ -1,4 +1,4 @@
-# ZR Elementor Pro Addon
+# ZR Elementor Addon
 
 ## Features
 
