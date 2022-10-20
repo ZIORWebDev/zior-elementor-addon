@@ -6,7 +6,7 @@
 
 ###### Ajax Search Filter for posts widget
 
-###### Archive/Category Filter for posts widget
+###### Ajax Archive/Category Filter for posts widget
 
 
 
