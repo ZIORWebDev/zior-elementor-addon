@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: ZR Elementor Pro Addon
- * Description: Custom elementor pro addon, slider, posts widget filters
+ * Plugin Name: ZR Elementor Addon
+ * Description: Custom addon for elementor and elementor pro.
  * Version: 0.10
  *
  * Text Domain: zr-elementor
