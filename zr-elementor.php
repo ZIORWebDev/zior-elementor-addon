@@ -87,6 +87,16 @@ if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
 
 		public function register_elementor_widgets( $widgets ) {
 			spl_autoload_register( function ( $class ) {
+
+				$allowed_class = [
+					'zr_slides',
+					'zr_posts_filters'
+				];
+
+				if ( ! in_array( strtolower( $class ), $allowed_class ) ) {
+					return;
+				}
+
 				include 'includes/widgets/' . strtolower( $class ) . '.php';
 			});
 	

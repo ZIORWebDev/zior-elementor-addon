@@ -78,6 +78,29 @@ function zr_custom_query_callback( $query ) {
 	return $query;
 }
 
+function zr_posts_filters_before_render( $widget ) {
+	if ( $widget->get_name() === 'zr_posts_filters' ) {
+		// Add custom parameter to month and year link
+		add_filter( 'month_link', 'zr_month_link', 10, 3 );
+		add_filter( 'year_link', 'zr_year_link', 10, 2 );		
+	}else{
+		remove_filter( 'month_link', 'zr_month_link', 10, 3 );
+		remove_filter( 'year_link', 'zr_year_link', 10, 2 );		
+	}
+	
+}
+add_action( 'elementor/frontend/widget/before_render', 'zr_posts_filters_before_render' );
+
+function zr_month_link( $monthlink, $year, $month ) {
+	$separator = strpos( $monthlink, '?' ) === false ? '?' : '&';
+	return $monthlink . $separator . '_year=' . $year . '&_month='  .$month;
+}
+
+function zr_year_link( $yearlink, $year ) {
+	$separator = strpos( $monthlink, '?' ) === false ? '?' : '&';
+	return $yearlink . $separator . '_year=' . $year;
+}
+
 function zr_elementor_loaded() {
 	if ( isset( $_GET['action'] ) && trim( $_GET['action'] ) === 'filter_posts_widget' && isset( $_GET['target_query_id'] ) ) {
 		$target_query_id = trim( $_GET['target_query_id'] );

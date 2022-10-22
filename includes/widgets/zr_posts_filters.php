@@ -223,8 +223,8 @@ class ZR_Posts_Filters extends Widget_Base {
 				'type'      => $settings['archive_filter'],
 				'post_type' => $settings['filter_post_type'],
 				'format'    => $settings['display_type'],
-				'year'      => trim( $_GET['_year'] ),
-				'monthnum'  => trim( $_GET['month'] ),
+				'year'      => isset( $_GET['_year'] ) ? trim( $_GET['_year'] ) : '',
+				'monthnum'  => isset( $_GET['month'] ) ? trim( $_GET['month'] ) : '',
 			];
 			$html .= $this->get_archived_posts( $args );
 		}else{
