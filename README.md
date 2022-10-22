@@ -15,4 +15,4 @@ ZR Elementor Addon is a custom addon that allows ajax filter for posts widget. F
 ## Frequently Asked Questions
 
 ###### Default settings
-When activated, the following widget will be added "Posts Filter", "ZR Slides". It will also add field "Load Result via Ajax" and "Load Result via Ajax" to the existing search form widget.
+When activated, the following widgets will be added "Posts Filter", "ZR Slides". It will also add fields "Load Result via Ajax" and "Load Result via Ajax" options to the search form widget.
