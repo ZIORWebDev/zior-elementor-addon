@@ -69,9 +69,11 @@ jQuery(window).on("elementor/frontend/init", function() {
         var _year = "";
         if (type == "archive") {
             const archive_url = (display == "option") ? $el.val() : $el.attr("href");
-            const urlParams = new URLSearchParams(archive_url.split("?")[1]);
-            _month = urlParams.get("_month").replace(/\D/g, "");
-            _year = urlParams.get("_year").replace(/\D/g, "")
+            if (archive_url.split("?")[1]) {
+                const urlParams = new URLSearchParams(archive_url.split("?")[1]);
+                _month = urlParams.get("_month").replace(/\D/g, "");
+                _year = urlParams.get("_year").replace(/\D/g, "")
+            }
         }
         
         var termid = "";
@@ -87,7 +89,7 @@ jQuery(window).on("elementor/frontend/init", function() {
             _year: _year,
             action: "filter_posts_widget"
         };
-        console.log("data", data);
+
         return data;
     }
 });
