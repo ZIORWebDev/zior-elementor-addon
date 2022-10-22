@@ -7,13 +7,13 @@ use Elementor\Group_Control_Typography;
 use Elementor\Icons_Manager;
 use Elementor\Repeater;
 use Elementor\Utils;
-use ElementorPro\Base\Base_Widget;
+use Elementor\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class ZR_Slides extends Base_Widget {
+class ZR_Slides extends Widget_Base {
 
 	public function get_name() {
 		return 'zr_slides';

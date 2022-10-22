@@ -46,8 +46,8 @@ function zr_custom_query_callback( $query ) {
 		$query->query_vars['s'] = trim( $_GET['keyword'] );
 	}
 
-	if ( isset($_GET['year'] ) && is_int( intval( $_GET['year'] ) ) ) {
-		$query->query_vars['year'] = trim( $_GET['year'] );
+	if ( isset($_GET['_year'] ) && is_int( intval( $_GET['_year'] ) ) ) {
+		$query->query_vars['year'] = trim( $_GET['_year'] );
 	}
 	
 	if ( isset($_GET['month'] ) && is_int( intval( $_GET['month'] ) ) ) {

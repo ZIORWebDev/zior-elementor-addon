@@ -37,22 +37,21 @@ if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
 		}
 
 		public function run() {
-			add_action( 'init', [ $this, 'init' ] );
-			add_action( 'elementor_pro/init', [ $this, 'elementor_pro_init' ] );
-		}
+			if ( ! did_action( 'elementor/loaded' ) ) {
+				add_action( 'admin_notices', [ $this, 'missing_plugin_notice' ] );
+			}
 
-		public function init() {
-			add_action( 'admin_notices', [ $this, 'missing_plugin_notice' ] );
+			add_action( 'elementor/init', [ $this, 'elementor_init' ] );
 		}
 		
 		/**
 		 * Only load the addon on the Elementor core hook, ensuring the plugin is active.
 		 */
-		public function elementor_pro_init() {
+		public function elementor_init() {
 			$this->setup_constants();
 			require_once ZR_PLUGIN_DIR . 'includes/filters.php';
 			require_once ZR_PLUGIN_DIR . 'includes/actions.php';
-			add_action( 'elementor/widgets/register', [ $this, 'zr_register_elementor_widets' ], 10 );
+			add_action( 'elementor/widgets/register', [ $this, 'register_elementor_widgets' ], 10 );
 		}
 
 		/**
@@ -80,20 +79,19 @@ if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
 		
 		public function missing_plugin_notice() { ?>
 			<div class="error">
-				<p><?php printf( 'The <stron>%s</strong> addon plugin cannot be activated because Elementor Pro is missing.', esc_html( 'ZR Elementor Pro' ) ); ?></p>
+				<p><?php printf( 'The <stron>%s</strong> addon plugin cannot be activated because Elementor Pro is missing.', esc_html( 'ZR Elementor' ) ); ?></p>
 			</div>
 			<?php
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
 
-		public function register_elementor_widets( $widgets ) {
+		public function register_elementor_widgets( $widgets ) {
 			spl_autoload_register( function ( $class ) {
 				include 'includes/widgets/' . strtolower( $class ) . '.php';
 			});
 	
 			$widgets->register( new ZR_Slides() );
 			$widgets->register( new ZR_Posts_Filters() );
-			$widgets->register( new ZR_Date_Range_Filters() );
 		}
 	}
 

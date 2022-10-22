@@ -14,11 +14,11 @@ class ZR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_title() {
-		return esc_html__( 'ZR Posts Filters', 'zr-elementor' );
+		return esc_html__( 'Posts Filter', 'zr-elementor' );
 	}
 
 	public function get_icon() {
-		return 'eicon-post-list';
+		return 'eicon-filter';
 	}
 
 	public function get_keywords() {
@@ -55,6 +55,7 @@ class ZR_Posts_Filters extends Widget_Base {
 					'archive' => esc_html__( 'Date Archive', 'zr-elementor' ),
 				],
 				'frontend_available' => true,
+				'prefix_class' => 'posts-filter--type-',
 			]
 		);
 
@@ -83,7 +84,7 @@ class ZR_Posts_Filters extends Widget_Base {
 					'condition' => [
 						'filter_type' => 'category',
 						'filter_post_type' => $key,
-					],
+					]
 				]
 			);
 		}
@@ -115,12 +116,13 @@ class ZR_Posts_Filters extends Widget_Base {
 					'html' => esc_html__( 'HTML', 'zr-elementor' ),
 					'option' => esc_html__( 'Select', 'zr-elementor' )
 				],
+				'prefix_class' => 'posts-filter--display-',
 				'frontend_available' => true
 			]
 		);
 
 		$this->add_control(
-			'zr_ajax_load',
+			'ajax_load',
 			[
 				'label'        => esc_html__( 'Load Result via Ajax', 'zr-elementor' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
@@ -128,7 +130,7 @@ class ZR_Posts_Filters extends Widget_Base {
 				'label_off'    => esc_html__( 'No', 'zr-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
-				'prefix_class' => 'elementor-archive-filter--ajax-load-',
+				'prefix_class' => 'posts-filter--ajax-',
 				'render_type' => 'template',
 			]
 		);
@@ -138,10 +140,7 @@ class ZR_Posts_Filters extends Widget_Base {
 			[
 				'type'        => \Elementor\Controls_Manager::TEXT,
 				'label'       => esc_html__( 'Target Query ID', 'zr-elementor' ),
-				'description' => esc_html__( 'Target posts widget to render search results via ajax.', 'zr-elementor' ),
-				'condition' => [
-					'zr_ajax_load' => 'yes',
-				],
+				'description' => esc_html__( 'Target posts widget to render search results via ajax.', 'zr-elementor' )
 			]
 		);
 
@@ -164,10 +163,11 @@ class ZR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_archived_posts( $args ) {
+		$html = '';
 		$atts = array_merge( [
 			'type'            => 'yearly',
 			'limit'           => '',
-			'format'          => '', 
+			'format'          => 'html', 
 			'before'          => '',
 			'after'           => '',
 			'show_post_count' => false,
@@ -178,7 +178,14 @@ class ZR_Posts_Filters extends Widget_Base {
 
 		$archives = wp_get_archives( $atts );
 
-		return $archives;
+		if ( $args['format'] === 'option' ) {
+			$archives = '<option>All</option>' . $archives;
+			$html .= '<select data-post-type="'.$args['post_type'].'">' . $archives . '</select>';
+		} else {
+			$html .= $archives;
+		}
+		
+		return $html;
 	}
 
 	public function get_post_types() {
@@ -206,12 +213,18 @@ class ZR_Posts_Filters extends Widget_Base {
 		$taxonomy = $settings['selected_taxonomy_' . $settings['filter_post_type']];
 
 		$html = '<div data-taxonomy="'. $taxonomy .'" data-targetid="'. $settings['target_query_id'] . '">';
-		$html .= '<a href="#">All</a> ';
+		
+		if ( $settings['display_type'] === 'html' ) {
+			$html .= '<a href="#">All</a> ';
+		}
 
 		if ( $settings['filter_type'] === 'archive' ) {
 			$args = [
 				'type'      => $settings['archive_filter'],
-				'post_type' => $settings['filter_post_type']
+				'post_type' => $settings['filter_post_type'],
+				'format'    => $settings['display_type'],
+				'year'      => trim( $_GET['_year'] ),
+				'monthnum'  => trim( $_GET['month'] ),
 			];
 			$html .= $this->get_archived_posts( $args );
 		}else{
@@ -222,14 +235,34 @@ class ZR_Posts_Filters extends Widget_Base {
 
 			$terms = $this->get_terms( $args );
 
-			foreach( $terms as $term ) {
-				
-				$html .= '<a href="'. get_term_link( $term->term_id ) .'" data-targetid="'. $settings['target_query_id'] .'" data-termid="'. $term->term_id .'">'. $term->name .'</a> ';
+			if ( $settings['display_type'] === 'option' ) {
+				$html .= $this->build_select( $terms );
+			} else {
+				$html .= $this->build_link( $terms );
 			}
 		}
 		
 		$html .= '</div>';
 
 		echo $html;
+	}
+
+	public function build_select( $terms ) {
+		$select = '<select name="data-termid">';
+		$select .= '<option value="">All </option>';
+		foreach( $terms as $term ) {
+			$select .= '<option value="'. $term->term_id .'">'. $term->name .'</option>';
+		}
+		$select .= '</select>';
+		return $select;
+	}
+
+	public function build_link( $terms ) {
+		$links = '';
+		foreach( $terms as $term ) {
+			$links .= '<li><a href="'. get_term_link( $term->term_id ) .'" data-termid="'. $term->term_id .'">'. $term->name .'</a></li>';
+		}
+
+		return $links;
 	}
 }
