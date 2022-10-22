@@ -41,12 +41,17 @@ function zr_search_form_widget_controls( $element, $args ) {
 add_action( 'elementor/element/search-form/search_content/before_section_end', 'zr_search_form_widget_controls', 10, 2 );
 
 function zr_custom_query_callback( $query ) {
+	
 	if ( isset($_GET['keyword'] ) && trim( $_GET['keyword'] ) !== '' ) {
 		$query->query_vars['s'] = trim( $_GET['keyword'] );
 	}
 
-	if ( isset($_GET['post_date'] ) && is_int( intval( $_GET['post_date'] ) ) ) {
-		$query->query_vars['year'] = trim( $_GET['post_date'] );
+	if ( isset($_GET['year'] ) && is_int( intval( $_GET['year'] ) ) ) {
+		$query->query_vars['year'] = trim( $_GET['year'] );
+	}
+	
+	if ( isset($_GET['month'] ) && is_int( intval( $_GET['month'] ) ) ) {
+		$query->query_vars['monthnum'] = trim( $_GET['month'] );
 	}
 
 	if ( isset($_GET['page_num'] ) && trim( $_GET['page_num'] ) !== '' ) {
@@ -56,7 +61,7 @@ function zr_custom_query_callback( $query ) {
 	$term = get_term( intval( $_GET['term_id'] ) );
 
 	if ( isset( $_GET['term_id'] ) && intval( trim( $_GET['term_id'] ) ) > 0 ) {
-		$query->query_vars['report_categories'] = $term->slug;
+		$query->query_vars[ trim( $_GET['taxonomy'] ) ] = $term->slug;
 		$query->tax_query->queries[0] = [
 			'taxonomy' => trim( $_GET['taxonomy'] ),
 			'terms'    => [ $term->slug ],

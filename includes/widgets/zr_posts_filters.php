@@ -96,14 +96,26 @@ class ZR_Posts_Filters extends Widget_Base {
 				'default' => 'yearly',
 				'options' => [
 					'yearly' => esc_html__( 'Yearly', 'zr-elementor' ),
-					'monthly' => esc_html__( 'Monthly', 'zr-elementor' ),
-					'weekly' => esc_html__( 'Weekly', 'zr-elementor' ),
-					'daily' => esc_html__( 'Daily', 'zr-elementor' ),
+					'monthly' => esc_html__( 'Monthly', 'zr-elementor' )
 				],
 				'frontend_available' => true,
 				'condition' => [
 					'filter_type' => 'archive',
 				],
+			]
+		);
+
+		$this->add_control(
+			'display_type',
+			[
+				'label' => esc_html__( 'Display Type', 'zr-elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'html',
+				'options' => [
+					'html' => esc_html__( 'HTML', 'zr-elementor' ),
+					'option' => esc_html__( 'Select', 'zr-elementor' )
+				],
+				'frontend_available' => true
 			]
 		);
 
