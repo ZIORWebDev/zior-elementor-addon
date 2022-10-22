@@ -26,7 +26,7 @@ class ZR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		wp_register_script( 'zr-posts-filter', ZR_PLUGIN_URL . 'assets/js/posts_filter.js', array( 'jquery' ), NULL, true );
+		wp_register_script( 'zr-posts-filter', ZR_PLUGIN_URL . 'assets/js/posts-filter.js', array( 'jquery' ), NULL, true );
 		return [ 'zr-posts-filter' ];
 	}
 	
