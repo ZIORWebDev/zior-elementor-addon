@@ -30,7 +30,7 @@ if ( ! class_exists( 'ZR_Elementor_Addon' ) ) :
 		/**
 		 * @var string
 		 */
-		protected $version = '1.0';
+		protected $version = '0.10';
 
 		/**
 		 * @var ZR_Elementor_Addon
