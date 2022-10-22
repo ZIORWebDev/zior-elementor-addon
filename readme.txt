@@ -29,6 +29,6 @@ Initial release.
 
 = Default settings =
 
-When activated, the following widget will be added "Posts Filter", "ZR Slides". It will also add field "Load Result via Ajax" and "Load Result via Ajax" to the existing search form widget.
+When activated, the following widgets will be added "Posts Filter", "ZR Slides". It will also add fields "Load Result via Ajax" and "Load Result via Ajax" options to the search form widget.
 
 == Screenshots ==
