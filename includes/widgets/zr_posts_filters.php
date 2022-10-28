@@ -215,7 +215,7 @@ class ZR_Posts_Filters extends Widget_Base {
 		$html = '<div data-taxonomy="'. $taxonomy .'" data-targetid="'. $settings['target_query_id'] . '">';
 		
 		if ( $settings['display_type'] === 'html' ) {
-			$html .= '<a href="#">All</a> ';
+			$html .= '<li><a href="#">All</a> </li>';
 		}
 
 		if ( $settings['filter_type'] === 'archive' ) {
@@ -258,9 +258,10 @@ class ZR_Posts_Filters extends Widget_Base {
 	}
 
 	public function build_link( $terms ) {
+		// TODO: Add show description switcher
 		$links = '';
 		foreach( $terms as $term ) {
-			$links .= '<li><a href="'. get_term_link( $term->term_id ) .'" data-termid="'. $term->term_id .'">'. $term->name .'</a></li>';
+			$links .= '<li><a href="'. get_term_link( $term->term_id ) .'" data-termid="'. $term->term_id .'">'. $term->name .'</a> <span clss="taxonomy-description">' . $term->description . '</span></li>';
 		}
 
 		return $links;
