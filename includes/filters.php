@@ -36,6 +36,11 @@ function zior_kses_filter_allowed_html( $allowed, $context ) {
 		'id'    => 1,
 		'value' => 1,
 	);
+	
+	$allowed['span'] = array(
+		'data-*' => 1,
+		'class'  => 1,
+	);
 
 	$allowed['a']['data-*'] = 1;
 
