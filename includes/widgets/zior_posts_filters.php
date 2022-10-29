@@ -70,6 +70,9 @@ class ZIOR_Posts_Filters extends Widget_Base {
 				'return_value' => 'yes',
 				'default'      => 'no',
 				'render_type'  => 'template',
+				'condition'            => [
+					'filter_type'      => 'category'
+				],
 			]
 		);
 
