@@ -152,5 +152,4 @@ function zior_search_form_render_fields( $widget ) {
 		echo "<input type='hidden' name='target_query_id' value='{$query_id}' />";
 	}
 }
-
 add_action( 'elementor_pro/search_form/after_input', 'zior_search_form_render_fields' );
