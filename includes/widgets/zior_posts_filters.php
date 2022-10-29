@@ -52,10 +52,24 @@ class ZIOR_Posts_Filters extends Widget_Base {
 				'default'            => 'category',
 				'frontend_available' => true,
 				'prefix_class'       => 'posts-filter--type-',
+				'render_type'        => 'template',
 				'options'            => [
 					'category'       => __( 'Category / Taxonomy', 'zior-elementor' ),
 					'archive'        => __( 'Date Archive', 'zior-elementor' ),
 				],
+			]
+		);
+
+		$this->add_control(
+			'show_description',
+			[
+				'label'        => __( 'Show Description?', 'zior-elementor' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'zior-elementor' ),
+				'label_off'    => __( 'No', 'zior-elementor' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'render_type'  => 'template',
 			]
 		);
 
@@ -68,7 +82,8 @@ class ZIOR_Posts_Filters extends Widget_Base {
 				'type'               => Controls_Manager::SELECT,
 				'default'            => 'post',
 				'options'            => $posttypes,
-				'frontend_available' => true
+				'frontend_available' => true,
+				'render_type'        => 'template',
 			]
 		);
 		
@@ -81,10 +96,11 @@ class ZIOR_Posts_Filters extends Widget_Base {
 					'default'              => 'category',
 					'options'              => $this->get_taxonomies( $key ),
 					'frontend_available'   => true,
+					'render_type'          => 'template',
 					'condition'            => [
 						'filter_type'      => 'category',
 						'filter_post_type' => $key,
-					]
+					],
 				]
 			);
 		}
@@ -92,32 +108,35 @@ class ZIOR_Posts_Filters extends Widget_Base {
 		$this->add_control(
 			'archive_filter',
 			[
-				'label' => __( 'Archive Type', 'zior-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'yearly',
-				'options' => [
-					'yearly' => __( 'Yearly', 'zior-elementor' ),
-					'monthly' => __( 'Monthly', 'zior-elementor' )
-				],
+				'label'              => __( 'Archive Type', 'zior-elementor' ),
+				'type'               => Controls_Manager::SELECT,
+				'default'            => 'yearly',
+				'render_type'        => 'template',
 				'frontend_available' => true,
-				'condition' => [
-					'filter_type' => 'archive',
+				'options'            => [
+					'yearly'         => __( 'Yearly', 'zior-elementor' ),
+					'monthly'        => __( 'Monthly', 'zior-elementor' )
 				],
+				'condition'          => [
+					'filter_type'    => 'archive',
+				],
+				
 			]
 		);
 
 		$this->add_control(
 			'display_type',
 			[
-				'label' => __( 'Display Type', 'zior-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'html',
-				'options' => [
-					'html' => __( 'HTML', 'zior-elementor' ),
-					'option' => __( 'Select', 'zior-elementor' )
+				'label'              => __( 'Display Type', 'zior-elementor' ),
+				'type'               => Controls_Manager::SELECT,
+				'default'            => 'html',
+				'prefix_class'       => 'posts-filter--display-',
+				'frontend_available' => true,
+				'render_type'        => 'template',
+				'options'            => [
+					'html'           => __( 'HTML', 'zior-elementor' ),
+					'option'         => __( 'Select', 'zior-elementor' )
 				],
-				'prefix_class' => 'posts-filter--display-',
-				'frontend_available' => true
 			]
 		);
 
@@ -180,7 +199,7 @@ class ZIOR_Posts_Filters extends Widget_Base {
 
 		if ( $args['format'] === 'option' ) {
 			$archives = '<option>All</option>' . $archives;
-			$html .= '<select data-post-type="'.$args['post_type'].'">' . $archives . '</select>';
+			$html .= '<select data-post-type="'.esc_attr( $args['post_type'] ).'">' . $archives . '</select>';
 		} else {
 			$html .= $archives;
 		}
@@ -189,8 +208,14 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_post_types() {
-		$types = [];
-		$post_types = get_post_types( [ 'capability_type' => 'post', 'public' => 1 ], 'objects' );
+		$types      = [];
+		$post_types = get_post_types(
+			[
+				'capability_type' => 'post',
+				'public' => 1
+			],
+			'objects'
+		);
 
 		foreach( $post_types as $post_type ) {
 			$types[ $post_type->name ] = $post_type->label;
@@ -212,20 +237,24 @@ class ZIOR_Posts_Filters extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$taxonomy = $settings['selected_taxonomy_' . $settings['filter_post_type']];
 
-		$html = '<div data-taxonomy="'. $taxonomy .'" data-targetid="'. $settings['target_query_id'] . '">';
+		$html = '<div data-taxonomy="'. esc_attr( $taxonomy ) .'" data-targetid="'. esc_attr( $settings['target_query_id'] ) . '">';
 		
 		if ( $settings['display_type'] === 'html' ) {
 			$html .= '<li><a href="#">All</a> </li>';
 		}
 
 		if ( $settings['filter_type'] === 'archive' ) {
+			$year  = sanitize_text_field( $_GET['_year'] );
+			$month = sanitize_text_field( $_GET['month'] );
+
 			$args = [
 				'type'      => $settings['archive_filter'],
 				'post_type' => $settings['filter_post_type'],
 				'format'    => $settings['display_type'],
-				'year'      => isset( $_GET['_year'] ) ? trim( $_GET['_year'] ) : '',
-				'monthnum'  => isset( $_GET['month'] ) ? trim( $_GET['month'] ) : '',
+				'year'      => is_int( $year ) ? $year : '',
+				'monthnum'  => is_int( $month ) ? $month : '',
 			];
+
 			$html .= $this->get_archived_posts( $args );
 		} else {
 			$args = [
@@ -238,7 +267,7 @@ class ZIOR_Posts_Filters extends Widget_Base {
 			if ( $settings['display_type'] === 'option' ) {
 				$html .= $this->build_select( $terms );
 			} else {
-				$html .= $this->build_link( $terms );
+				$html .= $this->build_link( $terms, $settings['show_description'] );
 			}
 		}
 		
@@ -250,17 +279,25 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	public function build_select( $terms ) {
 		$select = '<select name="data-termid">';
 		$select .= '<option value="">All </option>';
+		
 		foreach( $terms as $term ) {
-			$select .= '<option value="'. esc_attr( $term->term_id ) .'">'. $term->name .'</option>';
+			$select .= '<option value="'. esc_attr( $term->term_id ) .'">'. esc_html( $term->name ) .'</option>';
 		}
+
 		$select .= '</select>';
 		return $select;
 	}
 
-	public function build_link( $terms ) {
+	public function build_link( $terms, $show ) {
 		$links = '';
 		foreach( $terms as $term ) {
-			$links .= '<li><a href="'. get_term_link( $term->term_id ) .'" data-termid="'. $term->term_id .'">'. $term->name .'</a> <span clss="taxonomy-description">' . $term->description . '</span></li>';
+			$links .= '<li><a href="'. esc_url( get_term_link( $term->term_id ) ) .'" data-termid="'. esc_attr( $term->term_id ) .'">'. esc_html( $term->name ) .'</a>';
+
+			if ( 'yes' === $show ) {
+				$links .= '<span class="taxonomy-description">' . wp_kses( $term->description, wp_kses_allowed_html() ) . '</span>';
+			}
+
+			$links .= '</li>';
 		}
 
 		return $links;
