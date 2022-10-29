@@ -4,7 +4,7 @@
  *
  * Plugin Name: ZIOR Elementor Addon
  * Description: Custom addon for elementor and elementor pro.
- * Version:     0.1.0
+ * Version:     0.1.1
  * Author:      Rey Calantaol
  * Author URI:  https://github.com/reygcalantaol
  * License:     GPLv2 or later
@@ -29,7 +29,7 @@ final class ZIOR_Elementor_Addon {
 	/**
 	 * @var string
 	 */
-	protected $version = '0.1.0';
+	protected $version = '0.1.1';
 
 	/**
 	 * @var ZIOR_Elementor_Addon
