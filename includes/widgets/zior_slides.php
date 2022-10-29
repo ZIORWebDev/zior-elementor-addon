@@ -13,14 +13,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class ZR_Slides extends Widget_Base {
+class ZIOR_Slides extends Widget_Base {
 
 	public function get_name() {
-		return 'zr_slides';
+		return 'zior_slides';
 	}
 
 	public function get_title() {
-		return esc_html__( 'ZR Slides', 'zr-elementor' );
+		return __( 'ZIOR Slides', 'zior-elementor' );
 	}
 
 	public function get_icon() {
@@ -32,22 +32,22 @@ class ZR_Slides extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		wp_register_script( 'zr-slider', ZR_PLUGIN_URL . 'assets/js/slider.js', array( 'jquery' ), NULL, true );
-		return [ 'swiper', 'zr-slider' ];
+		wp_register_script( 'zior-slider', ZIOR_PLUGIN_URL . 'assets/js/slider.js', array( 'jquery' ), NULL, true );
+		return [ 'swiper', 'zior-slider' ];
 	}
 	
 	public function get_style_depends() {
-		wp_register_style( 'zr-main', ZR_PLUGIN_URL . 'assets/css/main.css' );
-		return [ 'zr-main' ];
+		wp_register_style( 'zior-main', ZIOR_PLUGIN_URL . 'assets/css/main.css' );
+		return [ 'zior-main' ];
 	}
 
 	public static function get_button_sizes() {
 		return [
-			'xs' => esc_html__( 'Extra Small', 'zr-elementor' ),
-			'sm' => esc_html__( 'Small', 'zr-elementor' ),
-			'md' => esc_html__( 'Medium', 'zr-elementor' ),
-			'lg' => esc_html__( 'Large', 'zr-elementor' ),
-			'xl' => esc_html__( 'Extra Large', 'zr-elementor' ),
+			'xs' => __( 'Extra Small', 'zior-elementor' ),
+			'sm' => __( 'Small', 'zior-elementor' ),
+			'md' => __( 'Medium', 'zior-elementor' ),
+			'lg' => __( 'Large', 'zior-elementor' ),
+			'xl' => __( 'Extra Large', 'zior-elementor' ),
 		];
 	}
 
@@ -55,7 +55,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_slides',
 			[
-				'label' => esc_html__( 'Slides', 'zr-elementor' ),
+				'label' => __( 'Slides', 'zior-elementor' ),
 			]
 		);
 
@@ -63,12 +63,12 @@ class ZR_Slides extends Widget_Base {
 
 		$repeater->start_controls_tabs( 'slides_repeater' );
 
-		$repeater->start_controls_tab( 'background', [ 'label' => esc_html__( 'Background', 'zr-elementor' ) ] );
+		$repeater->start_controls_tab( 'background', [ 'label' => __( 'Background', 'zior-elementor' ) ] );
 
 		$repeater->add_control(
 			'background_color',
 			[
-				'label' => esc_html__( 'Color', 'zr-elementor' ),
+				'label' => __( 'Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '#bbbbbb',
 				'selectors' => [
@@ -80,7 +80,7 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_image',
 			[
-				'label' => _x( 'Image', 'Background Control', 'zr-elementor' ),
+				'label' => _x( 'Image', 'Background Control', 'zior-elementor' ),
 				'type' => Controls_Manager::MEDIA,
 				'selectors' => [
 					'{{WRAPPER}} {{CURRENT_ITEM}} .swiper-slide-bg' => 'background-image: url({{URL}})',
@@ -91,13 +91,13 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_size',
 			[
-				'label' => _x( 'Size', 'Background Control', 'zr-elementor' ),
+				'label' => _x( 'Size', 'Background Control', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'cover',
 				'options' => [
-					'cover' => _x( 'Cover', 'Background Control', 'zr-elementor' ),
-					'contain' => _x( 'Contain', 'Background Control', 'zr-elementor' ),
-					'auto' => _x( 'Auto', 'Background Control', 'zr-elementor' ),
+					'cover' => _x( 'Cover', 'Background Control', 'zior-elementor' ),
+					'contain' => _x( 'Contain', 'Background Control', 'zior-elementor' ),
+					'auto' => _x( 'Auto', 'Background Control', 'zior-elementor' ),
 				],
 				'selectors' => [
 					'{{WRAPPER}} {{CURRENT_ITEM}} .swiper-slide-bg' => 'background-size: {{VALUE}}',
@@ -117,7 +117,7 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_ken_burns',
 			[
-				'label' => esc_html__( 'Ken Burns Effect', 'zr-elementor' ),
+				'label' => __( 'Ken Burns Effect', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'conditions' => [
@@ -135,12 +135,12 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'zoom_direction',
 			[
-				'label' => esc_html__( 'Zoom Direction', 'zr-elementor' ),
+				'label' => __( 'Zoom Direction', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'in',
 				'options' => [
-					'in' => esc_html__( 'In', 'zr-elementor' ),
-					'out' => esc_html__( 'Out', 'zr-elementor' ),
+					'in' => __( 'In', 'zior-elementor' ),
+					'out' => __( 'Out', 'zior-elementor' ),
 				],
 				'conditions' => [
 					'terms' => [
@@ -157,7 +157,7 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_overlay',
 			[
-				'label' => esc_html__( 'Background Overlay', 'zr-elementor' ),
+				'label' => __( 'Background Overlay', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 				'conditions' => [
@@ -175,7 +175,7 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_overlay_color',
 			[
-				'label' => esc_html__( 'Color', 'zr-elementor' ),
+				'label' => __( 'Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => 'rgba(0,0,0,0.5)',
 				'conditions' => [
@@ -195,10 +195,10 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'background_overlay_blend_mode',
 			[
-				'label' => esc_html__( 'Blend Mode', 'zr-elementor' ),
+				'label' => __( 'Blend Mode', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'' => esc_html__( 'Normal', 'zr-elementor' ),
+					'' => __( 'Normal', 'zior-elementor' ),
 					'multiply' => 'Multiply',
 					'screen' => 'Screen',
 					'overlay' => 'Overlay',
@@ -228,14 +228,14 @@ class ZR_Slides extends Widget_Base {
 
 		$repeater->end_controls_tab();
 
-		$repeater->start_controls_tab( 'content', [ 'label' => esc_html__( 'Content', 'zr-elementor' ) ] );
+		$repeater->start_controls_tab( 'content', [ 'label' => __( 'Content', 'zior-elementor' ) ] );
 
 		$repeater->add_control(
 			'heading',
 			[
-				'label' => esc_html__( 'Title & Description', 'zr-elementor' ),
+				'label' => __( 'Title & Description', 'zior-elementor' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'Slide Heading', 'zr-elementor' ),
+				'default' => __( 'Slide Heading', 'zior-elementor' ),
 				'label_block' => true,
 				'dynamic' => [
 					'active' => true,
@@ -246,9 +246,9 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'description',
 			[
-				'label' => esc_html__( 'Description', 'zr-elementor' ),
+				'label' => __( 'Description', 'zior-elementor' ),
 				'type' => Controls_Manager::TEXTAREA,
-				'default' => esc_html__( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'zr-elementor' ),
+				'default' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'zior-elementor' ),
 				'show_label' => false,
 				'dynamic' => [
 					'active' => true,
@@ -259,9 +259,9 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'button_text',
 			[
-				'label' => esc_html__( 'Button Text', 'zr-elementor' ),
+				'label' => __( 'Button Text', 'zior-elementor' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'Click Here', 'zr-elementor' ),
+				'default' => __( 'Click Here', 'zior-elementor' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -271,9 +271,9 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'link',
 			[
-				'label' => esc_html__( 'Link', 'zr-elementor' ),
+				'label' => __( 'Link', 'zior-elementor' ),
 				'type' => Controls_Manager::URL,
-				'placeholder' => esc_html__( 'https://your-link.com', 'zr-elementor' ),
+				'placeholder' => __( 'https://your-link.com', 'zior-elementor' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -283,11 +283,11 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'link_click',
 			[
-				'label' => esc_html__( 'Apply Link On', 'zr-elementor' ),
+				'label' => __( 'Apply Link On', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'slide' => esc_html__( 'Whole Slide', 'zr-elementor' ),
-					'button' => esc_html__( 'Button Only', 'zr-elementor' ),
+					'slide' => __( 'Whole Slide', 'zior-elementor' ),
+					'button' => __( 'Button Only', 'zior-elementor' ),
 				],
 				'default' => 'slide',
 				'conditions' => [
@@ -305,7 +305,7 @@ class ZR_Slides extends Widget_Base {
 		$repeater->add_control(
 			'counter_box_title',
 			[
-				'label' => esc_html__( 'Counter Box Title', 'zr-elementor' ),
+				'label' => __( 'Counter Box Title', 'zior-elementor' ),
 				'type' => Controls_Manager::TEXT,
 			]
 		);
@@ -316,27 +316,27 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'slides',
 			[
-				'label' => esc_html__( 'Slides', 'zr-elementor' ),
+				'label' => __( 'Slides', 'zior-elementor' ),
 				'type' => Controls_Manager::REPEATER,
 				'show_label' => true,
 				'fields' => $repeater->get_controls(),
 				'default' => [
 					[
-						'heading' => esc_html__( 'Slide 1 Heading', 'zr-elementor' ),
-						'description' => esc_html__( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zr-elementor' ),
-						'button_text' => esc_html__( 'Click Here', 'zr-elementor' ),
+						'heading' => __( 'Slide 1 Heading', 'zior-elementor' ),
+						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zior-elementor' ),
+						'button_text' => __( 'Click Here', 'zior-elementor' ),
 						'background_color' => '#833ca3',
 					],
 					[
-						'heading' => esc_html__( 'Slide 2 Heading', 'zr-elementor' ),
-						'description' => esc_html__( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zr-elementor' ),
-						'button_text' => esc_html__( 'Click Here', 'zr-elementor' ),
+						'heading' => __( 'Slide 2 Heading', 'zior-elementor' ),
+						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zior-elementor' ),
+						'button_text' => __( 'Click Here', 'zior-elementor' ),
 						'background_color' => '#4054b2',
 					],
 					[
-						'heading' => esc_html__( 'Slide 3 Heading', 'zr-elementor' ),
-						'description' => esc_html__( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zr-elementor' ),
-						'button_text' => esc_html__( 'Click Here', 'zr-elementor' ),
+						'heading' => __( 'Slide 3 Heading', 'zior-elementor' ),
+						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'zior-elementor' ),
+						'button_text' => __( 'Click Here', 'zior-elementor' ),
 						'background_color' => '#1abc9c',
 					],
 				],
@@ -347,7 +347,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_responsive_control(
 			'slides_height',
 			[
-				'label' => esc_html__( 'Height', 'zr-elementor' ),
+				'label' => __( 'Height', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -375,7 +375,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_slider_options',
 			[
-				'label' => esc_html__( 'Slider Options', 'zr-elementor' ),
+				'label' => __( 'Slider Options', 'zior-elementor' ),
 				'type' => Controls_Manager::SECTION,
 			]
 		);
@@ -383,7 +383,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'autoplay',
 			[
-				'label' => esc_html__( 'Autoplay', 'zr-elementor' ),
+				'label' => __( 'Autoplay', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
@@ -393,7 +393,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'pause_on_hover',
 			[
-				'label' => esc_html__( 'Pause on Hover', 'zr-elementor' ),
+				'label' => __( 'Pause on Hover', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'render_type' => 'none',
@@ -407,7 +407,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'pause_on_interaction',
 			[
-				'label' => esc_html__( 'Pause on Interaction', 'zr-elementor' ),
+				'label' => __( 'Pause on Interaction', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'render_type' => 'none',
@@ -421,7 +421,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'autoplay_speed',
 			[
-				'label' => esc_html__( 'Autoplay Speed', 'zr-elementor' ),
+				'label' => __( 'Autoplay Speed', 'zior-elementor' ),
 				'type' => Controls_Manager::NUMBER,
 				'default' => 5000,
 				'condition' => [
@@ -438,7 +438,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'infinite',
 			[
-				'label' => esc_html__( 'Infinite Loop', 'zr-elementor' ),
+				'label' => __( 'Infinite Loop', 'zior-elementor' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
@@ -448,12 +448,12 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'transition',
 			[
-				'label' => esc_html__( 'Transition', 'zr-elementor' ),
+				'label' => __( 'Transition', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'slide',
 				'options' => [
-					'slide' => esc_html__( 'Slide', 'zr-elementor' ),
-					'fade' => esc_html__( 'Fade', 'zr-elementor' ),
+					'slide' => __( 'Slide', 'zior-elementor' ),
+					'fade' => __( 'Fade', 'zior-elementor' ),
 				],
 				'frontend_available' => true,
 			]
@@ -462,7 +462,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'transition_speed',
 			[
-				'label' => esc_html__( 'Transition Speed', 'zr-elementor' ) . ' (ms)',
+				'label' => __( 'Transition Speed', 'zior-elementor' ) . ' (ms)',
 				'type' => Controls_Manager::NUMBER,
 				'default' => 500,
 				'render_type' => 'none',
@@ -473,16 +473,16 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'content_animation',
 			[
-				'label' => esc_html__( 'Content Animation', 'zr-elementor' ),
+				'label' => __( 'Content Animation', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'fadeInUp',
 				'options' => [
-					'' => esc_html__( 'None', 'zr-elementor' ),
-					'fadeInDown' => esc_html__( 'Down', 'zr-elementor' ),
-					'fadeInUp' => esc_html__( 'Up', 'zr-elementor' ),
-					'fadeInRight' => esc_html__( 'Right', 'zr-elementor' ),
-					'fadeInLeft' => esc_html__( 'Left', 'zr-elementor' ),
-					'zoomIn' => esc_html__( 'Zoom', 'zr-elementor' ),
+					'' => __( 'None', 'zior-elementor' ),
+					'fadeInDown' => __( 'Down', 'zior-elementor' ),
+					'fadeInUp' => __( 'Up', 'zior-elementor' ),
+					'fadeInRight' => __( 'Right', 'zior-elementor' ),
+					'fadeInLeft' => __( 'Left', 'zior-elementor' ),
+					'zoomIn' => __( 'Zoom', 'zior-elementor' ),
 				],
 				'assets' => [
 					'styles' => [
@@ -508,7 +508,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_slides',
 			[
-				'label' => esc_html__( 'Slides', 'zr-elementor' ),
+				'label' => __( 'Slides', 'zior-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -516,7 +516,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_responsive_control(
 			'content_max_width',
 			[
-				'label' => esc_html__( 'Content Width', 'zr-elementor' ),
+				'label' => __( 'Content Width', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -548,7 +548,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_responsive_control(
 			'slides_padding',
 			[
-				'label' => esc_html__( 'Padding', 'zr-elementor' ),
+				'label' => __( 'Padding', 'zior-elementor' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
@@ -560,20 +560,20 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'slides_horizontal_position',
 			[
-				'label' => esc_html__( 'Horizontal Position', 'zr-elementor' ),
+				'label' => __( 'Horizontal Position', 'zior-elementor' ),
 				'type' => Controls_Manager::CHOOSE,
 				'default' => 'center',
 				'options' => [
 					'left' => [
-						'title' => esc_html__( 'Left', 'zr-elementor' ),
+						'title' => __( 'Left', 'zior-elementor' ),
 						'icon' => 'eicon-h-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'zr-elementor' ),
+						'title' => __( 'Center', 'zior-elementor' ),
 						'icon' => 'eicon-h-align-center',
 					],
 					'right' => [
-						'title' => esc_html__( 'Right', 'zr-elementor' ),
+						'title' => __( 'Right', 'zior-elementor' ),
 						'icon' => 'eicon-h-align-right',
 					],
 				],
@@ -584,20 +584,20 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'slides_vertical_position',
 			[
-				'label' => esc_html__( 'Vertical Position', 'zr-elementor' ),
+				'label' => __( 'Vertical Position', 'zior-elementor' ),
 				'type' => Controls_Manager::CHOOSE,
 				'default' => 'middle',
 				'options' => [
 					'top' => [
-						'title' => esc_html__( 'Top', 'zr-elementor' ),
+						'title' => __( 'Top', 'zior-elementor' ),
 						'icon' => 'eicon-v-align-top',
 					],
 					'middle' => [
-						'title' => esc_html__( 'Middle', 'zr-elementor' ),
+						'title' => __( 'Middle', 'zior-elementor' ),
 						'icon' => 'eicon-v-align-middle',
 					],
 					'bottom' => [
-						'title' => esc_html__( 'Bottom', 'zr-elementor' ),
+						'title' => __( 'Bottom', 'zior-elementor' ),
 						'icon' => 'eicon-v-align-bottom',
 					],
 				],
@@ -608,19 +608,19 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'slides_text_align',
 			[
-				'label' => esc_html__( 'Text Align', 'zr-elementor' ),
+				'label' => __( 'Text Align', 'zior-elementor' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => esc_html__( 'Left', 'zr-elementor' ),
+						'title' => __( 'Left', 'zior-elementor' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'zr-elementor' ),
+						'title' => __( 'Center', 'zior-elementor' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => esc_html__( 'Right', 'zr-elementor' ),
+						'title' => __( 'Right', 'zior-elementor' ),
 						'icon' => 'eicon-text-align-right',
 					],
 				],
@@ -644,7 +644,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_title',
 			[
-				'label' => esc_html__( 'Title', 'zr-elementor' ),
+				'label' => __( 'Title', 'zior-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -652,7 +652,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'heading_spacing',
 			[
-				'label' => esc_html__( 'Spacing', 'zr-elementor' ),
+				'label' => __( 'Spacing', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -669,7 +669,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'heading_color',
 			[
-				'label' => esc_html__( 'Text Color', 'zr-elementor' ),
+				'label' => __( 'Text Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-heading' => 'color: {{VALUE}}',
@@ -694,7 +694,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_description',
 			[
-				'label' => esc_html__( 'Description', 'zr-elementor' ),
+				'label' => __( 'Description', 'zior-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -702,7 +702,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'description_spacing',
 			[
-				'label' => esc_html__( 'Spacing', 'zr-elementor' ),
+				'label' => __( 'Spacing', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -719,7 +719,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'description_color',
 			[
-				'label' => esc_html__( 'Text Color', 'zr-elementor' ),
+				'label' => __( 'Text Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-description' => 'color: {{VALUE}}',
@@ -744,7 +744,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_button',
 			[
-				'label' => esc_html__( 'Button', 'zr-elementor' ),
+				'label' => __( 'Button', 'zior-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -752,7 +752,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'button_size',
 			[
-				'label' => esc_html__( 'Size', 'zr-elementor' ),
+				'label' => __( 'Size', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'sm',
 				'options' => self::get_button_sizes(),
@@ -773,7 +773,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'button_border_width',
 			[
-				'label' => esc_html__( 'Border Width', 'zr-elementor' ),
+				'label' => __( 'Border Width', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -790,7 +790,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'button_border_radius',
 			[
-				'label' => esc_html__( 'Border Radius', 'zr-elementor' ),
+				'label' => __( 'Border Radius', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -806,12 +806,12 @@ class ZR_Slides extends Widget_Base {
 
 		$this->start_controls_tabs( 'button_tabs' );
 
-		$this->start_controls_tab( 'normal', [ 'label' => esc_html__( 'Normal', 'zr-elementor' ) ] );
+		$this->start_controls_tab( 'normal', [ 'label' => __( 'Normal', 'zior-elementor' ) ] );
 
 		$this->add_control(
 			'button_text_color',
 			[
-				'label' => esc_html__( 'Text Color', 'zr-elementor' ),
+				'label' => __( 'Text Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-button' => 'color: {{VALUE}};',
@@ -837,7 +837,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'button_border_color',
 			[
-				'label' => esc_html__( 'Border Color', 'zr-elementor' ),
+				'label' => __( 'Border Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-button' => 'border-color: {{VALUE}};',
@@ -847,12 +847,12 @@ class ZR_Slides extends Widget_Base {
 
 		$this->end_controls_tab();
 
-		$this->start_controls_tab( 'hover', [ 'label' => esc_html__( 'Hover', 'zr-elementor' ) ] );
+		$this->start_controls_tab( 'hover', [ 'label' => __( 'Hover', 'zior-elementor' ) ] );
 
 		$this->add_control(
 			'button_hover_text_color',
 			[
-				'label' => esc_html__( 'Text Color', 'zr-elementor' ),
+				'label' => __( 'Text Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-button:hover' => 'color: {{VALUE}};',
@@ -878,7 +878,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'button_hover_border_color',
 			[
-				'label' => esc_html__( 'Border Color', 'zr-elementor' ),
+				'label' => __( 'Border Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-button:hover' => 'border-color: {{VALUE}};',
@@ -895,7 +895,7 @@ class ZR_Slides extends Widget_Base {
 		$this->start_controls_section(
 			'section_style_navigation',
 			[
-				'label' => esc_html__( 'Navigation', 'zr-elementor' ),
+				'label' => __( 'Navigation', 'zior-elementor' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'navigation' => [ 'arrows', 'dots', 'both' ],
@@ -906,7 +906,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'heading_style_arrows',
 			[
-				'label' => esc_html__( 'Arrows', 'zr-elementor' ),
+				'label' => __( 'Arrows', 'zior-elementor' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -918,12 +918,12 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'arrows_position',
 			[
-				'label' => esc_html__( 'Arrows Position', 'zr-elementor' ),
+				'label' => __( 'Arrows Position', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'inside',
 				'options' => [
-					'inside' => esc_html__( 'Inside', 'zr-elementor' ),
-					'outside' => esc_html__( 'Outside', 'zr-elementor' ),
+					'inside' => __( 'Inside', 'zior-elementor' ),
+					'outside' => __( 'Outside', 'zior-elementor' ),
 				],
 				'prefix_class' => 'elementor-arrows-position-',
 				'condition' => [
@@ -935,7 +935,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'arrows_size',
 			[
-				'label' => esc_html__( 'Arrows Size', 'zr-elementor' ),
+				'label' => __( 'Arrows Size', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -955,7 +955,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'arrows_color',
 			[
-				'label' => esc_html__( 'Arrows Color', 'zr-elementor' ),
+				'label' => __( 'Arrows Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-swiper-button' => 'color: {{VALUE}}',
@@ -970,7 +970,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'heading_style_dots',
 			[
-				'label' => esc_html__( 'Pagination', 'zr-elementor' ),
+				'label' => __( 'Pagination', 'zior-elementor' ),
 				'type' => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => [
@@ -982,12 +982,12 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'dots_position',
 			[
-				'label' => esc_html__( 'Position', 'zr-elementor' ),
+				'label' => __( 'Position', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'inside',
 				'options' => [
-					'outside' => esc_html__( 'Outside', 'zr-elementor' ),
-					'inside' => esc_html__( 'Inside', 'zr-elementor' ),
+					'outside' => __( 'Outside', 'zior-elementor' ),
+					'inside' => __( 'Inside', 'zior-elementor' ),
 				],
 				'prefix_class' => 'elementor-pagination-position-',
 				'condition' => [
@@ -999,7 +999,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'dots_size',
 			[
-				'label' => esc_html__( 'Size', 'zr-elementor' ),
+				'label' => __( 'Size', 'zior-elementor' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1021,7 +1021,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'dots_color_inactive',
 			[
-				'label' => esc_html__( 'Color', 'zr-elementor' ),
+				'label' => __( 'Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					// The opacity property will override the default inactive dot color which is opacity 0.2.
@@ -1036,7 +1036,7 @@ class ZR_Slides extends Widget_Base {
 		$this->add_control(
 			'dots_color',
 			[
-				'label' => esc_html__( 'Active Color', 'zr-elementor' ),
+				'label' => __( 'Active Color', 'zior-elementor' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .swiper-pagination-bullet-active' => 'background-color: {{VALUE}};',
@@ -1109,11 +1109,11 @@ class ZR_Slides extends Widget_Base {
 		<div class="app-main-banner">
 			<div class="swiper" dir="<?php Utils::print_unescaped_internal_string( $direction ); ?>" data-animation="<?php echo esc_attr( $settings['content_animation'] ); ?>">
 				<div class="swiper-wrapper">
-				<?php echo implode( '', $slides ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo wp_kses( implode( '', $slides, wp_kses_allowed_html() ) ); ?>
 				</div>
 				<div class="app-main-banner-controls-wrap">
 					<div class="app-main-banner-controls">
-						<p class="swiper-active-title"><?php echo $default_heading; ?></p>
+						<p class="swiper-active-title"><?php echo esc_html( $default_heading ); ?></p>
 						<div class="swiper-pagination"></div>
 						<div class="swiper-scrollbar"></div>
 					</div>

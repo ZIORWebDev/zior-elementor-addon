@@ -1,28 +1,28 @@
 <?php
-function zr_frontend_scripts() {
-	wp_enqueue_script( 'zr-main', ZR_PLUGIN_URL . 'assets/js/main.js', array( 'jquery' ), NULL, true );
+function zior_frontend_scripts() {
+	wp_enqueue_script( 'zior-main', ZIOR_PLUGIN_URL . 'assets/js/main.js', array( 'jquery' ), NULL, true );
 	
 	$options = [
 		'ajax_url' => admin_url( 'admin-ajax.php' )
 	];
 
-	wp_localize_script( 'zr-main', 'zr', $options );
+	wp_localize_script( 'zior-main', 'zior', $options );
 
 }
-add_action( 'wp_enqueue_scripts', 'zr_frontend_scripts', 10 );
+add_action( 'wp_enqueue_scripts', 'zior_frontend_scripts', 10 );
 
-function zr_search_form_widget_controls( $element, $args ) {
+function zior_search_form_widget_controls( $element, $args ) {
 	$element->add_control(
-		'zr_ajax_load',
+		'ajax_load',
 		[
-			'label'        => esc_html__( 'Load Result via Ajax', 'zr-elementor' ),
+			'label'        => __( 'Load Result via Ajax', 'zior-elementor' ),
 			'type'         => \Elementor\Controls_Manager::SWITCHER,
-			'label_on'     => esc_html__( 'Yes', 'zr-elementor' ),
-			'label_off'    => esc_html__( 'No', 'zr-elementor' ),
+			'label_on'     => __( 'Yes', 'zior-elementor' ),
+			'label_off'    => __( 'No', 'zior-elementor' ),
 			'return_value' => 'yes',
 			'default'      => 'no',
 			'prefix_class' => 'elementor-search-form--ajax-load-',
-			'render_type' => 'template',
+			'render_type'  => 'template',
 		]
 	);
 
@@ -30,46 +30,50 @@ function zr_search_form_widget_controls( $element, $args ) {
 		'target_query_id',
 		[
 			'type'        => \Elementor\Controls_Manager::TEXT,
-			'label'       => esc_html__( 'Target Query ID', 'zr-elementor' ),
-			'description' => esc_html__( 'Target posts widget to render search results via ajax.', 'zr-elementor' ),
-			'condition' => [
-				'zr_ajax_load' => 'yes',
+			'label'       => __( 'Target Query ID', 'zior-elementor' ),
+			'description' => __( 'Target posts widget to render search results via ajax.', 'zior-elementor' ),
+			'condition'   => [
+				'ajax_load' => 'yes',
 			],
 		]
 	);
 }
-add_action( 'elementor/element/search-form/search_content/before_section_end', 'zr_search_form_widget_controls', 10, 2 );
+add_action( 'elementor/element/search-form/search_content/before_section_end', 'zior_search_form_widget_controls', 10, 2 );
 
-function zr_custom_query_callback( $query ) {
+function zior_custom_query_callback( $query ) {
 	
-	if ( isset($_GET['keyword'] ) && trim( $_GET['keyword'] ) !== '' ) {
-		$query->query_vars['s'] = trim( $_GET['keyword'] );
+	$keyword = sanitize_text_field( $_GET['keyword'] );
+	if ( ! empty( $keyword ) ) {
+		$query->query_vars['s'] = $keyword;
 	}
 
-	if ( isset($_GET['_year'] ) && is_int( intval( $_GET['_year'] ) ) ) {
-		$query->query_vars['year'] = trim( $_GET['_year'] );
+	$year = sanitize_text_field( $_GET['_year'] );
+	if ( is_int( $year ) ) {
+		$query->query_vars['year'] = $year;
+
+		$month = sanitize_text_field( $_GET['month'] );
+		if ( is_int( $month ) ) {
+			$query->query_vars['monthnum'] = $month;
+		}
 	}
 	
-	if ( isset($_GET['month'] ) && is_int( intval( $_GET['month'] ) ) ) {
-		$query->query_vars['monthnum'] = trim( $_GET['month'] );
-	}
+	$page_num = absint( sanitize_text_field( $_GET['page_num'] ) );
+	$page_num = ( $page_num === 0 ) ? 1 : $page_num;
+	$query->query_vars['paged'] = trim( $_GET['page_num'] );
 
-	if ( isset($_GET['page_num'] ) && trim( $_GET['page_num'] ) !== '' ) {
-		$query->query_vars['paged'] = trim( $_GET['page_num'] );
-	}
+	$term = get_term( absint( $_GET['term_id'] ) );
 
-	$term = get_term( intval( $_GET['term_id'] ) );
-
-	if ( isset( $_GET['term_id'] ) && intval( trim( $_GET['term_id'] ) ) > 0 ) {
-		$query->query_vars[ trim( $_GET['taxonomy'] ) ] = $term->slug;
+	if ( $term ) {
+		$taxonomy = sanitize_title( $_GET['taxonomy'] );
+		$query->query_vars[ $taxonomy ] = $term->slug;
 		$query->tax_query->queries[0] = [
-			'taxonomy' => trim( $_GET['taxonomy'] ),
+			'taxonomy' => $taxonomy,
 			'terms'    => [ $term->slug ],
 			'field'    => 'slug',
 			'operator' => 'IN'
 		];
 
-		$query->tax_query->queried_terms[ trim( $_GET['taxonomy'] ) ] = [
+		$query->tax_query->queried_terms[ $taxonomy ] = [
 			'terms'    => [ $term->slug ],
 			'field'    => 'slug'
 		];
@@ -78,41 +82,42 @@ function zr_custom_query_callback( $query ) {
 	return $query;
 }
 
-function zr_posts_filters_before_render( $widget ) {
-	if ( $widget->get_name() === 'zr_posts_filters' ) {
-		// Add custom parameter to month and year link
-		add_filter( 'month_link', 'zr_month_link', 10, 3 );
-		add_filter( 'year_link', 'zr_year_link', 10, 2 );		
+function zior_posts_filters_before_render( $widget ) {
+	if ( $widget->get_name() === 'zior_posts_filters' ) {
+		add_filter( 'month_link', 'zior_month_link', 10, 3 );
+		add_filter( 'year_link', 'zior_year_link', 10, 2 );		
 	}else{
-		remove_filter( 'month_link', 'zr_month_link', 10, 3 );
-		remove_filter( 'year_link', 'zr_year_link', 10, 2 );		
+		remove_filter( 'month_link', 'zior_month_link', 10, 3 );
+		remove_filter( 'year_link', 'zior_year_link', 10, 2 );		
 	}
-	
 }
-add_action( 'elementor/frontend/widget/before_render', 'zr_posts_filters_before_render' );
+add_action( 'elementor/frontend/widget/before_render', 'zior_posts_filters_before_render' );
 
-function zr_month_link( $monthlink, $year, $month ) {
+function zior_month_link( $monthlink, $year, $month ) {
 	$separator = strpos( $monthlink, '?' ) === false ? '?' : '&';
 	return $monthlink . $separator . '_year=' . $year . '&_month='  .$month;
 }
 
-function zr_year_link( $yearlink, $year ) {
+function zior_year_link( $yearlink, $year ) {
 	$separator = strpos( $monthlink, '?' ) === false ? '?' : '&';
 	return $yearlink . $separator . '_year=' . $year;
 }
 
-function zr_elementor_loaded() {
-	if ( isset( $_GET['action'] ) && trim( $_GET['action'] ) === 'filter_posts_widget' && isset( $_GET['target_query_id'] ) ) {
-		$target_query_id = trim( $_GET['target_query_id'] );
-		add_action( "elementor/query/{$target_query_id}", 'zr_custom_query_callback' );
+function zior_elementor_loaded() {
+	$action   = sanitize_text_field( $_GET['action'] );
+	$query_id = sanitize_text_field( $_GET['target_query_id'] );
+	if ( $action === 'filter_posts_widget' && ! empty( $query_id ) ) {
+		add_action( "elementor/query/{$query_id}", 'zior_custom_query_callback' );
 	}
 }
-add_action( 'elementor/frontend/before_render', 'zr_elementor_loaded' );
+add_action( 'elementor/frontend/before_render', 'zior_elementor_loaded' );
 
-
-function zr_search_form_render_fields( $widget ) {
+function zior_search_form_render_fields( $widget ) {
 	$settings = $widget->get_settings_for_display();
-	echo "<input type='hidden' name='target_query_id' value='{$settings['target_query_id']}' />";
+	$query_id = esc_attr( $settings['target_query_id'] );
+	if ( ! empty( $query_id ) ) {
+		echo "<input type='hidden' name='target_query_id' value='{$query_id}' />";
+	}
 }
 
-add_action( 'elementor_pro/search_form/after_input', 'zr_search_form_render_fields' );
+add_action( 'elementor_pro/search_form/after_input', 'zior_search_form_render_fields' );

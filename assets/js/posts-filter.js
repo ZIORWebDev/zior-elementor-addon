@@ -67,7 +67,7 @@ jQuery(window).on("elementor/frontend/init", function() {
     function build_query_parameters($el, display, type) {
         var _month = "";
         var _year = "";
-        if (type == "archive") {
+        if (type === "archive") {
             const archive_url = (display == "option") ? $el.val() : $el.attr("href");
             if (archive_url.split("?")[1]) {
                 const urlParams = new URLSearchParams(archive_url.split("?")[1]);
@@ -77,7 +77,7 @@ jQuery(window).on("elementor/frontend/init", function() {
         }
         
         var termid = "";
-        if (type == "category") {
+        if (type === "category") {
             termid = (display == "option") ? $el.val() : $el.data("termid");
         }
         

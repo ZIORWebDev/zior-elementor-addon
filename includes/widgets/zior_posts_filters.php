@@ -7,14 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class ZR_Posts_Filters extends Widget_Base {
+class ZIOR_Posts_Filters extends Widget_Base {
 
 	public function get_name() {
-		return 'zr_posts_filters';
+		return 'zior_posts_filters';
 	}
 
 	public function get_title() {
-		return esc_html__( 'Posts Filter', 'zr-elementor' );
+		return __( 'Posts Filter', 'zior-elementor' );
 	}
 
 	public function get_icon() {
@@ -26,36 +26,36 @@ class ZR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		wp_register_script( 'zr-posts-filter', ZR_PLUGIN_URL . 'assets/js/posts-filter.js', array( 'jquery' ), NULL, true );
-		return [ 'zr-posts-filter' ];
+		wp_register_script( 'zior-posts-filter', ZIOR_PLUGIN_URL . 'assets/js/posts-filter.js', array( 'jquery' ), NULL, true );
+		return [ 'zior-posts-filter' ];
 	}
 	
 	public function get_style_depends() {
-		wp_register_style( 'zr-main', ZR_PLUGIN_URL . 'assets/css/main.css' );
-		return [ 'zr-main' ];
+		wp_register_style( 'zior-main', ZIOR_PLUGIN_URL . 'assets/css/main.css' );
+		return [ 'zior-main' ];
 	}
 
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_content',
 			[
-				'label' => esc_html__( 'Filter Options', 'zr-elementor' ),
-				'type' => Controls_Manager::SECTION,
+				'label' => __( 'Filter Options', 'zior-elementor' ),
+				'type'  => Controls_Manager::SECTION,
 			]
 		);
 
 		$this->add_control(
 			'filter_type',
 			[
-				'label' => esc_html__( 'Filter Type', 'zr-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'category',
-				'options' => [
-					'category' => esc_html__( 'Category / Taxonomy', 'zr-elementor' ),
-					'archive' => esc_html__( 'Date Archive', 'zr-elementor' ),
-				],
+				'label'              => __( 'Filter Type', 'zior-elementor' ),
+				'type'               => Controls_Manager::SELECT,
+				'default'            => 'category',
 				'frontend_available' => true,
-				'prefix_class' => 'posts-filter--type-',
+				'prefix_class'       => 'posts-filter--type-',
+				'options'            => [
+					'category'       => __( 'Category / Taxonomy', 'zior-elementor' ),
+					'archive'        => __( 'Date Archive', 'zior-elementor' ),
+				],
 			]
 		);
 
@@ -64,10 +64,10 @@ class ZR_Posts_Filters extends Widget_Base {
 		$this->add_control(
 			'filter_post_type',
 			[
-				'label' => esc_html__( 'Post Type', 'zr-elementor' ),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'post',
-				'options' => $posttypes,
+				'label'              => __( 'Post Type', 'zior-elementor' ),
+				'type'               => Controls_Manager::SELECT,
+				'default'            => 'post',
+				'options'            => $posttypes,
 				'frontend_available' => true
 			]
 		);
@@ -76,13 +76,13 @@ class ZR_Posts_Filters extends Widget_Base {
 			$this->add_control(
 				'selected_taxonomy_' . $key,
 				[
-					'label' => esc_html__( 'Taxonomy', 'zr-elementor' ),
-					'type' => Controls_Manager::SELECT,
-					'default' => 'category',
-					'options' => $this->get_taxonomies( $key ),
-					'frontend_available' => true,
-					'condition' => [
-						'filter_type' => 'category',
+					'label'                => __( 'Taxonomy', 'zior-elementor' ),
+					'type'                 => Controls_Manager::SELECT,
+					'default'              => 'category',
+					'options'              => $this->get_taxonomies( $key ),
+					'frontend_available'   => true,
+					'condition'            => [
+						'filter_type'      => 'category',
 						'filter_post_type' => $key,
 					]
 				]
@@ -92,12 +92,12 @@ class ZR_Posts_Filters extends Widget_Base {
 		$this->add_control(
 			'archive_filter',
 			[
-				'label' => esc_html__( 'Archive Type', 'zr-elementor' ),
+				'label' => __( 'Archive Type', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'yearly',
 				'options' => [
-					'yearly' => esc_html__( 'Yearly', 'zr-elementor' ),
-					'monthly' => esc_html__( 'Monthly', 'zr-elementor' )
+					'yearly' => __( 'Yearly', 'zior-elementor' ),
+					'monthly' => __( 'Monthly', 'zior-elementor' )
 				],
 				'frontend_available' => true,
 				'condition' => [
@@ -109,12 +109,12 @@ class ZR_Posts_Filters extends Widget_Base {
 		$this->add_control(
 			'display_type',
 			[
-				'label' => esc_html__( 'Display Type', 'zr-elementor' ),
+				'label' => __( 'Display Type', 'zior-elementor' ),
 				'type' => Controls_Manager::SELECT,
 				'default' => 'html',
 				'options' => [
-					'html' => esc_html__( 'HTML', 'zr-elementor' ),
-					'option' => esc_html__( 'Select', 'zr-elementor' )
+					'html' => __( 'HTML', 'zior-elementor' ),
+					'option' => __( 'Select', 'zior-elementor' )
 				],
 				'prefix_class' => 'posts-filter--display-',
 				'frontend_available' => true
@@ -124,14 +124,14 @@ class ZR_Posts_Filters extends Widget_Base {
 		$this->add_control(
 			'ajax_load',
 			[
-				'label'        => esc_html__( 'Load Result via Ajax', 'zr-elementor' ),
+				'label'        => __( 'Load Result via Ajax', 'zior-elementor' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'zr-elementor' ),
-				'label_off'    => esc_html__( 'No', 'zr-elementor' ),
+				'label_on'     => __( 'Yes', 'zior-elementor' ),
+				'label_off'    => __( 'No', 'zior-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 				'prefix_class' => 'posts-filter--ajax-',
-				'render_type' => 'template',
+				'render_type'  => 'template',
 			]
 		);
 	
@@ -139,8 +139,8 @@ class ZR_Posts_Filters extends Widget_Base {
 			'target_query_id',
 			[
 				'type'        => \Elementor\Controls_Manager::TEXT,
-				'label'       => esc_html__( 'Target Query ID', 'zr-elementor' ),
-				'description' => esc_html__( 'Target posts widget to render search results via ajax.', 'zr-elementor' )
+				'label'       => __( 'Target Query ID', 'zior-elementor' ),
+				'description' => __( 'Target posts widget to render search results via ajax.', 'zior-elementor' )
 			]
 		);
 
@@ -227,7 +227,7 @@ class ZR_Posts_Filters extends Widget_Base {
 				'monthnum'  => isset( $_GET['month'] ) ? trim( $_GET['month'] ) : '',
 			];
 			$html .= $this->get_archived_posts( $args );
-		}else{
+		} else {
 			$args = [
 				'object_type' => [ $settings['filter_post_type'] ],
 				'taxonomy' => $taxonomy
@@ -244,21 +244,20 @@ class ZR_Posts_Filters extends Widget_Base {
 		
 		$html .= '</div>';
 
-		echo $html;
+		echo wp_kses( $html, wp_kses_allowed_html() );
 	}
 
 	public function build_select( $terms ) {
 		$select = '<select name="data-termid">';
 		$select .= '<option value="">All </option>';
 		foreach( $terms as $term ) {
-			$select .= '<option value="'. $term->term_id .'">'. $term->name .'</option>';
+			$select .= '<option value="'. esc_attr( $term->term_id ) .'">'. $term->name .'</option>';
 		}
 		$select .= '</select>';
 		return $select;
 	}
 
 	public function build_link( $terms ) {
-		// TODO: Add show description switcher
 		$links = '';
 		foreach( $terms as $term ) {
 			$links .= '<li><a href="'. get_term_link( $term->term_id ) .'" data-termid="'. $term->term_id .'">'. $term->name .'</a> <span clss="taxonomy-description">' . $term->description . '</span></li>';

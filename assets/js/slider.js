@@ -63,6 +63,6 @@ jQuery(window).on("elementor/frontend/init", function() {
     }
 
     elementorFrontend.hooks.addAction(
-        "frontend/element_ready/zr_slides.default",
+        "frontend/element_ready/zior_slides.default",
         addHandler);
 });
