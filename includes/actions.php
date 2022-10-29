@@ -1,4 +1,9 @@
 <?php
+/*
+ * Enqueue scripts in the frontend
+ * 
+ * @return void
+ */
 function zior_frontend_scripts() {
 	wp_enqueue_script( 'zior-main', ZIOR_PLUGIN_URL . 'assets/js/main.js', array( 'jquery' ), NULL, true );
 	
@@ -11,6 +16,14 @@ function zior_frontend_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'zior_frontend_scripts', 10 );
 
+/*
+ * Add switcher control into search form widget
+ * 
+ * @param array $element
+ * @param array $args
+ * 
+ * @return void
+ */
 function zior_search_form_widget_controls( $element, $args ) {
 	$element->add_control(
 		'ajax_load',
@@ -40,8 +53,14 @@ function zior_search_form_widget_controls( $element, $args ) {
 }
 add_action( 'elementor/element/search-form/search_content/before_section_end', 'zior_search_form_widget_controls', 10, 2 );
 
+/*
+ * Add custom variables into global query object
+ * 
+ * @param object $query
+ * 
+ * @return object
+ */
 function zior_custom_query_callback( $query ) {
-	
 	$keyword = sanitize_text_field( $_GET['keyword'] );
 	if ( ! empty( $keyword ) ) {
 		$query->query_vars['s'] = $keyword;
@@ -82,6 +101,13 @@ function zior_custom_query_callback( $query ) {
 	return $query;
 }
 
+/*
+ * Add _year and _month query strings to archive links
+ * 
+ * @param object $widget
+ * 
+ * @return void
+ */
 function zior_posts_filters_before_render( $widget ) {
 	if ( $widget->get_name() === 'zior_posts_filters' ) {
 		add_filter( 'month_link', 'zior_month_link', 10, 3 );
@@ -99,19 +125,26 @@ function zior_month_link( $monthlink, $year, $month ) {
 }
 
 function zior_year_link( $yearlink, $year ) {
-	$separator = strpos( $monthlink, '?' ) === false ? '?' : '&';
+	$separator = strpos( $yearlink, '?' ) === false ? '?' : '&';
 	return $yearlink . $separator . '_year=' . $year;
 }
 
 function zior_elementor_loaded() {
-	$action   = sanitize_text_field( $_GET['action'] );
-	$query_id = sanitize_text_field( $_GET['target_query_id'] );
+	$action   = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
+	$query_id = isset( $_GET['target_query_id'] ) ? sanitize_text_field( $_GET['target_query_id'] ) : '';
 	if ( $action === 'filter_posts_widget' && ! empty( $query_id ) ) {
 		add_action( "elementor/query/{$query_id}", 'zior_custom_query_callback' );
 	}
 }
 add_action( 'elementor/frontend/before_render', 'zior_elementor_loaded' );
 
+/*
+ * Add target_query_id hidden field to search form when the search result is to be loaded via ajax
+ * 
+ * @param object $widget
+ * 
+ * @return void
+ */
 function zior_search_form_render_fields( $widget ) {
 	$settings = $widget->get_settings_for_display();
 	$query_id = esc_attr( $settings['target_query_id'] );

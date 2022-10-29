@@ -71,7 +71,7 @@ jQuery(window).on("elementor/frontend/init", function() {
             const archive_url = (display == "option") ? $el.val() : $el.attr("href");
             if (archive_url.split("?")[1]) {
                 const urlParams = new URLSearchParams(archive_url.split("?")[1]);
-                _month = urlParams.get("_month").replace(/\D/g, "");
+                _month = (urlParams.get("_month")) ? urlParams.get("_month").replace(/\D/g, "") : "";
                 _year = urlParams.get("_year").replace(/\D/g, "")
             }
         }

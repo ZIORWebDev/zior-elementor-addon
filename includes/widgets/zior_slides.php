@@ -1088,9 +1088,9 @@ class ZIOR_Slides extends Widget_Base {
 				}
 			}
 
-			$slide_html .= '<div class="swiper-slide" data-heading="'. $slide['heading'] .'" style="background-image: url('.$bg.')">';
+			$slide_html .= '<div class="swiper-slide" data-heading="'. esc_attr( $slide['heading'] ) .'" style="background-image: url('. esc_attr( $bg ).')">';
 			$slide_html .= '<div class="app-main-banner-content">';
-			$slide_html .= '<h1>' . $slide['description'] . '</h1>';
+			$slide_html .= '<h1>' . esc_html( $slide['description'] ) . '</h1>';
 			
 			if ( $slide['button_text'] ) {
 				$slide_html .= '<' . $btn_element . ' ' . $btn_attributes . ' ' . $this->get_render_attribute_string( 'button' ) . '>' . $slide['button_text'] . '</' . $btn_element . '>';

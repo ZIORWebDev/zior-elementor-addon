@@ -244,8 +244,8 @@ class ZIOR_Posts_Filters extends Widget_Base {
 		}
 
 		if ( $settings['filter_type'] === 'archive' ) {
-			$year  = sanitize_text_field( $_GET['_year'] );
-			$month = sanitize_text_field( $_GET['month'] );
+			$year  = isset( $_GET['_year'] ) ? sanitize_text_field( $_GET['_year'] ) : '';
+			$month = isset( $_GET['month'] ) ? sanitize_text_field( $_GET['month'] ) : '';
 
 			$args = [
 				'type'      => $settings['archive_filter'],
