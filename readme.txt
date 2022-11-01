@@ -25,6 +25,7 @@ Features
 
 = 0.1.1 =
 Stable release.
+Added posts widget empty results custom message
 
 = 0.1.0 =
 Initial release.
@@ -33,6 +34,6 @@ Initial release.
 
 = Default settings =
 
-When activated, the following widgets will be added "Posts Filter", "ZIOR Slides". It will also add fields "Load Result via Ajax" and "Load Result via Ajax" options to the search form widget.
+When activated, the following widgets will be added "Posts Filter", "ZIOR Slides". It will also add fields "Load Result via Ajax" and "Target Query ID" options to the search form widget, and custom empty message editor into posts widget.
 
 == Screenshots ==
