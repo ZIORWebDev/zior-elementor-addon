@@ -13,8 +13,60 @@ class ZIOR_Posts_Addon {
 	}
 
 	public function init_hooks() {
-		add_action( 'elementor/frontend/before_render', [ $this, 'elementor_before_render' ] );
+		add_action( 'elementor/frontend/before_render', [ $this, 'before_posts_render' ] );
+		add_action( 'elementor/element/posts/section_query/before_section_end', [ $this, 'posts_form_widget_controls' ], 10, 2 );
+		add_action( 'elementor/query/query_results', [ $this, 'query_results_not_found' ], 10, 2 );
 	}
+
+	/*
+	* Empty posts message
+	* 
+	* @param array $element
+	* @param array $args
+	* 
+	* @return void
+	*/
+	public function posts_form_widget_controls( $element, $args ) {
+		$element->add_control(
+			'show_empty_message',
+			[
+				'label'        => __( 'Show custom empty message?', 'zior-elementor' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'zior-elementor' ),
+				'label_off'    => __( 'No', 'zior-elementor' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'render_type'  => 'template',
+			]
+		);
+
+		$element->add_control(
+			'custom_empty_message',
+			[
+				'type'        => \Elementor\Controls_Manager::WYSIWYG,
+				'rows'        => 4,
+				'label'       => __( 'Custom Empty message', 'zior-elementor' ),
+				'description' => __( 'Show message when posts result is empty', 'zior-elementor' ),
+				'condition'   => [
+					'show_empty_message' => 'yes',
+				],
+			]
+		);
+	}
+
+	public function query_results_not_found( $query, $widget ) {
+		$posts_count = $query->found_posts;
+
+		if ( $posts_count === 0 ) {
+			$settings = $widget->get_settings();
+
+			if ( $settings['show_empty_message'] == 'yes' ) {
+				$empty_message = $settings['custom_empty_message'];
+				echo '<div class="app-posts-not-found">' . wp_kses( $empty_message, wp_kses_allowed_html() )  . '</div>';
+			}
+		}
+	}
+
 	/*
 	* Add custom variables into global query object
 	* 
@@ -63,7 +115,7 @@ class ZIOR_Posts_Addon {
 		return $query;
 	}
 
-	function elementor_frontend_before_render() {
+	function before_posts_render() {
 		$action   = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
 		$query_id = isset( $_GET['target_query_id'] ) ? sanitize_text_field( $_GET['target_query_id'] ) : '';
 		if ( $action === 'filter_posts_widget' && ! empty( $query_id ) ) {

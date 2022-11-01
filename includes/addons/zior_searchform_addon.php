@@ -14,7 +14,7 @@ class ZIOR_SearchForm_Addon {
 	}
 
 	/*
-	* Add switcher control into search form widget
+	* Load results via ajax flag
 	* 
 	* @param array $element
 	* @param array $args
