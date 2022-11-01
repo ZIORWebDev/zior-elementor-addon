@@ -63,9 +63,12 @@ final class ZIOR_Elementor_Addon {
 	 */
 	public function elementor_init() {
 		$this->setup_constants();
+		require_once ZIOR_PLUGIN_DIR . 'includes/functions.php';
 		require_once ZIOR_PLUGIN_DIR . 'includes/filters.php';
 		require_once ZIOR_PLUGIN_DIR . 'includes/actions.php';
-		add_action( 'elementor/widgets/register', [ $this, 'register_elementor_widgets' ], 10 );
+		require_once ZIOR_PLUGIN_DIR . 'includes/widgets/widgets.php';
+		require_once ZIOR_PLUGIN_DIR . 'includes/addons/addons.php';
+		require_once ZIOR_PLUGIN_DIR . 'includes/shortcodes/shortcodes.php';
 	}
 
 	/**
@@ -97,25 +100,6 @@ final class ZIOR_Elementor_Addon {
 		</div>
 		<?php
 		deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
-
-	public function register_elementor_widgets( $widgets ) {
-		spl_autoload_register( function ( $class ) {
-
-			$allowed_class = [
-				'zior_slides',
-				'zior_posts_filters'
-			];
-
-			if ( ! in_array( strtolower( $class ), $allowed_class ) ) {
-				return;
-			}
-
-			include 'includes/widgets/' . strtolower( $class ) . '.php';
-		});
-
-		$widgets->register( new ZIOR_Slides() );
-		$widgets->register( new ZIOR_Posts_Filters() );
 	}
 }
 
