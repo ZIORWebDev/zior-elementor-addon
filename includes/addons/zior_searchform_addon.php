@@ -5,8 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ZIOR_SearchForm_Addon {
 	public function __construct() {
-		add_action( 'elementor/element/search-form/search_content/before_section_end', 'search_form_widget_controls', 10, 2 );
-		add_action( 'elementor_pro/search_form/after_input', 'search_form_render_fields' );
+		$this->init_hooks();
+	}
+
+	public function init_hooks() {
+		add_action( 'elementor/element/search-form/search_content/before_section_end', [ $this, 'search_form_widget_controls' ], 10, 2 );
+		add_action( 'elementor_pro/search_form/after_input', [ $this, 'search_form_render_fields' ] );
 	}
 
 	/*
@@ -17,7 +21,7 @@ class ZIOR_SearchForm_Addon {
 	* 
 	* @return void
 	*/
-	function search_form_widget_controls( $element, $args ) {
+	public function search_form_widget_controls( $element, $args ) {
 		$element->add_control(
 			'ajax_load',
 			[
@@ -60,5 +64,3 @@ class ZIOR_SearchForm_Addon {
 		}
 	}
 }
-
-new ZIOR_SearchForm_Addon();

@@ -7,11 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-class ZIOR_Posts_Addons {
+class ZIOR_Posts_Addon {
 	public function __construct() {
-		add_action( 'elementor/frontend/before_render', 'elementor_frontend_before_render' );
+		$this->init_hooks();
 	}
 
+	public function init_hooks() {
+		add_action( 'elementor/frontend/before_render', [ $this, 'elementor_before_render' ] );
+	}
 	/*
 	* Add custom variables into global query object
 	* 
@@ -64,9 +67,8 @@ class ZIOR_Posts_Addons {
 		$action   = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
 		$query_id = isset( $_GET['target_query_id'] ) ? sanitize_text_field( $_GET['target_query_id'] ) : '';
 		if ( $action === 'filter_posts_widget' && ! empty( $query_id ) ) {
-			add_action( "elementor/query/{$query_id}", 'zior_custom_query_callback' );
+			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ] );
 		}
 	}
 	
 }
-new ZIOR_Posts_Addons();

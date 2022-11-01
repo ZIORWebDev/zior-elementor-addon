@@ -11,7 +11,7 @@ function zior_register_elementor_widgets( $widgets ) {
 			return;
 		}
 
-		include 'includes/widgets/' . strtolower( $class ) . '.php';
+		include strtolower( $class ) . '.php';
 	});
 
 	$widgets->register( new ZIOR_Slides() );
