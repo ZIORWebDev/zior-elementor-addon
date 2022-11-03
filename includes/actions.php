@@ -12,6 +12,5 @@ function zior_frontend_scripts() {
 	];
 
 	wp_localize_script( 'zior-main', 'zior', $options );
-
 }
 add_action( 'wp_enqueue_scripts', 'zior_frontend_scripts', 10 );

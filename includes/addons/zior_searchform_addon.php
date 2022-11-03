@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ZIOR_SearchForm_Addon {
 	public function __construct() {
-		$this->init_hooks();
-	}
-
-	public function init_hooks() {
 		add_action( 'elementor/element/search-form/search_content/before_section_end', [ $this, 'search_form_widget_controls' ], 10, 2 );
 		add_action( 'elementor_pro/search_form/after_input', [ $this, 'search_form_render_fields' ] );
 	}
@@ -59,8 +55,7 @@ class ZIOR_SearchForm_Addon {
 	public function search_form_render_fields( $widget ) {
 		$settings = $widget->get_settings_for_display();
 		$query_id = esc_attr( $settings['target_query_id'] );
-		if ( ! empty( $query_id ) ) {
-			echo "<input type='hidden' name='target_query_id' value='{$query_id}' />";
-		}
+
+		$widget->add_render_attribute( '_wrapper', 'data-query_id', $query_id );
 	}
 }

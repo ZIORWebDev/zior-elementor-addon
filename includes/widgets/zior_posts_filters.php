@@ -239,8 +239,7 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		$taxonomy = $settings['selected_taxonomy_' . $settings['filter_post_type']];
-
-		$html = '<div data-taxonomy="'. esc_attr( $taxonomy ) .'" data-targetid="'. esc_attr( $settings['target_query_id'] ) . '">';
+		$html     = '<div data-taxonomy="'. esc_attr( $taxonomy ) .'" data-targetid="'. esc_attr( $settings['target_query_id'] ) . '">';
 		
 		if ( $settings['display_type'] === 'html' ) {
 			$html .= '<li><a href="#">All</a> </li>';
@@ -275,7 +274,6 @@ class ZIOR_Posts_Filters extends Widget_Base {
 		}
 		
 		$html .= '</div>';
-
 		echo wp_kses( $html, wp_kses_allowed_html() );
 	}
 
