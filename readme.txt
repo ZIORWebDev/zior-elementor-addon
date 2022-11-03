@@ -25,7 +25,7 @@ Features
 
 = 0.1.2 =
 Removed ajax template.
-Added custom "no result" found message.
+Added custom "no result found" message option.
 Returned widget content as JSON directly.
 
 = 0.1.1 =
