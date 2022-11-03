@@ -211,7 +211,6 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_post_types() {
-		$types      = [];
 		$post_types = get_post_types(
 			[
 				'capability_type' => 'post',
@@ -228,7 +227,6 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_terms( $args ) {
-		$terms = [];
 		$terms = get_terms( [
 			'taxonomy' => $args['taxonomy']
 		] );
@@ -246,8 +244,8 @@ class ZIOR_Posts_Filters extends Widget_Base {
 		}
 
 		if ( $settings['filter_type'] === 'archive' ) {
-			$year  = isset( $_GET['_year'] ) ? sanitize_text_field( $_GET['_year'] ) : '';
-			$month = isset( $_GET['month'] ) ? sanitize_text_field( $_GET['month'] ) : '';
+			$year  = sanitize_text_field( $_GET['_year'] ?? '' );
+			$month = sanitize_text_field( $_GET['month'] ?? '' );
 
 			$args = [
 				'type'      => $settings['archive_filter'],
@@ -265,7 +263,6 @@ class ZIOR_Posts_Filters extends Widget_Base {
 			];
 
 			$terms = $this->get_terms( $args );
-
 			if ( $settings['display_type'] === 'option' ) {
 				$html .= $this->build_select( $terms );
 			} else {
