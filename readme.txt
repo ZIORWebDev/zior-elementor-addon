@@ -2,8 +2,8 @@
 Contributors: Rey Calantaol
 Tags: elementor posts widget, ajax posts widget filter, ajax posts search filter, custom slider
 Requires at least: 4.9
-Tested up to: 6.0.3
-Stable tag: 0.1.1
+Tested up to: 6.1
+Stable tag: 0.1.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,6 +22,10 @@ Features
 
 
 == Changelog ==
+
+= 0.1.2 =
+Removed ajax template.
+Returned widget content as JSON directly.
 
 = 0.1.1 =
 Stable release.
