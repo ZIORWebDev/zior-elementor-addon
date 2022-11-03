@@ -56,7 +56,7 @@ jQuery(window).on("elementor/frontend/init", function() {
                 _year = urlParams.get("_year").replace(/\D/g, "")
             }
         }
-        
+
         var termid = "";
         if (type === "category") {
             termid = (display == "option") ? $el.val() : $el.data("termid");

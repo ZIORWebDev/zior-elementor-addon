@@ -92,7 +92,7 @@ class ZIOR_Posts_Addon {
 			}
 		}
 	
-		$page_num = absint( sanitize_text_field( $_GET['page_num'] ?? 0 ) );
+		$page_num = absint( sanitize_text_field( $_GET['page_num'] ?? 1 ) );
 		$page_num = ( $page_num === 0 ) ? 1 : $page_num;
 		$query->query_vars['paged'] = $page_num;
 
@@ -108,8 +108,8 @@ class ZIOR_Posts_Addon {
 			];
 
 			$query->tax_query->queried_terms[ $taxonomy ] = [
-				'terms'    => [ $term->slug ?? '' ],
-				'field'    => 'slug'
+				'terms' => [ $term->slug ?? '' ],
+				'field' => 'slug'
 			];
 		}
 
@@ -128,11 +128,14 @@ class ZIOR_Posts_Addon {
 		$is_ajax  = absint( sanitize_text_field( $_GET['is_ajax'] ?? 0 ) );
 		$settings = $element->get_settings();
 		$query_id = $settings['posts_query_id'] ?? '';
-		if ( $action == 'filter_posts_widget' && $is_ajax === 1 ) {
+		
+		if ( $action == 'filter_posts_widget' ) {
 			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 10, 2 );
+		}
+
+		if ( $action == 'filter_posts_widget' && $is_ajax === 1 ) {
 			ob_end_clean();
 			ob_start();
-			
 		}
 	}
 
