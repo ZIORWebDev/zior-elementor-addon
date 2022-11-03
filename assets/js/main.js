@@ -15,7 +15,7 @@ jQuery(window).on("elementor/frontend/init", function() {
             data: data,
             dataType: "JSON",
             success: function(resp) {
-                jQuery(`#${target_query_id}`).parent().html(jQuery(resp.data));
+                jQuery(`#${target_query_id}`).html(jQuery(resp.data));
             }
         });
     });

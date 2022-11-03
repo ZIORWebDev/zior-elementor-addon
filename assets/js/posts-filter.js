@@ -1,27 +1,26 @@
 jQuery(window).on("elementor/frontend/init", function() {
     jQuery(".posts-filter--type-archive a").click(function(e) {
         e.preventDefault();
-        prepare_ajax_query(jQuery(this));
+        prepare_ajax_query(jQuery(this), "html", "archive");
     });
 
     jQuery(".posts-filter--type-archive select").change(function(e) {
         e.preventDefault();
-        prepare_ajax_query(jQuery(this));
+        prepare_ajax_query(jQuery(this), "option", "archive");
     });
 
     jQuery(".posts-filter--type-category a").click(function(e) {
         e.preventDefault();
-        prepare_ajax_query(jQuery(this));
+        prepare_ajax_query(jQuery(this), "html", "category");
     });
 
     jQuery(".posts-filter--type-category select").change(function(e) {
         e.preventDefault();
-        prepare_ajax_query(jQuery(this));
+        prepare_ajax_query(jQuery(this), "option", "category");
     });
 
-    function prepare_ajax_query($el) {
-        const data = build_query_parameters($el, "option", "category");
-        console.log("data", data);
+    function prepare_ajax_query($el, display, type) {
+        const data = build_query_parameters($el, display, type);
         const URI = window.location.href.split('?')[0];
         if ($el.closest(".elementor-element").hasClass("posts-filter--ajax-yes")) {
             data.is_ajax = 1;
@@ -41,7 +40,7 @@ jQuery(window).on("elementor/frontend/init", function() {
             data: data,
             dataType: "JSON",
             success: function(resp) {
-                jQuery(`#${target_id}`).parent().html(jQuery(resp));
+                jQuery(`#${target_id}`).html(jQuery(resp.data));
             }
         });
     }
