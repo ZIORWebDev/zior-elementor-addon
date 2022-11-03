@@ -11,7 +11,7 @@
  * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain: zior-elementor
  * Requires at least: 4.9
- * Tested up to: 6.0.3
+ * Tested up to: 6.1
  * Requires PHP: 7.4
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
