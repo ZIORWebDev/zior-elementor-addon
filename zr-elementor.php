@@ -94,11 +94,11 @@ final class ZIOR_Elementor_Addon {
 		}
 	}
 	
-	public function missing_plugin_notice() { ?>
-		<div class="error">
-			<p><?php printf( 'The <stron>%s</strong> addon plugin cannot be activated because Elementor Pro is missing.', esc_html( 'ZIOR Elementor' ) ); ?></p>
-		</div>
-		<?php
+	public function missing_plugin_notice() {
+		echo '<div class="error"><p>';
+		printf( 'The <stron>%s</strong> addon plugin cannot be activated because Elementor is missing.', esc_html( 'ZIOR Elementor' ) );
+		echo '</p></div>';
+
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 	}
 }
