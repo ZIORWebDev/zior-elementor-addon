@@ -1,5 +1,5 @@
 === ZIOR Elementor Addon ===
-Contributors: Rey Calantaol
+Contributors: reygcalantaol
 Tags: elementor posts widget, ajax posts widget filter, ajax posts search filter, custom slider
 Requires at least: 4.9
 Tested up to: 6.1
