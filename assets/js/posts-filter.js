@@ -33,14 +33,15 @@ jQuery(window).on("elementor/frontend/init", function() {
     }
 
     function render_ajax_query(data, target_id, uri) {
-        jQuery(`#${target_id}`).html("");
+        var $el = jQuery(`[data-query-id="${target_id}"]`);
+        $el.html("");
         jQuery.ajax({
             url: uri,
             method: "GET",
             data: data,
             dataType: "JSON",
             success: function(resp) {
-                jQuery(`#${target_id}`).html(jQuery(resp.data));
+                $el.html(jQuery(resp.data));
             }
         });
     }

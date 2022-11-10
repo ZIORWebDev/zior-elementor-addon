@@ -8,14 +8,15 @@ jQuery(window).on("elementor/frontend/init", function() {
             action: "filter_posts_widget"
         };
 
-        jQuery(`#${target_query_id}`).html("");
+        var $el = jQuery(`[data-query-id="${target_query_id}"]`);
+        $el.html("");
         jQuery.ajax({
             url: jQuery(this)[0].baseURI,
             method: "GET",
             data: data,
             dataType: "JSON",
             success: function(resp) {
-                jQuery(`#${target_query_id}`).html(jQuery(resp.data));
+                $el.html(jQuery(resp.data));
             }
         });
     });
