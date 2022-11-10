@@ -1,5 +1,6 @@
 <?php
 use Elementor\Controls_Manager;
+use Elementor\Repeater;
 use Elementor\Utils;
 use Elementor\Widget_Base;
 
@@ -9,7 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class ZIOR_Posts_Addon {
 	public function __construct() {
-		add_action( 'elementor/element/posts/section_query/before_section_end', [ $this, 'posts_form_widget_controls' ], 10, 2 );
+		add_action( 'elementor/element/posts/section_query/after_section_end', [ $this, 'posts_form_widget_controls' ], 10, 2 );
+
 		add_action( 'elementor/frontend/before_render', [ $this, 'before_posts_render' ], 99 );
 		add_action( 'elementor/query/query_results', [ $this, 'query_results_not_found' ], 10, 2 );
 		add_action( 'elementor/frontend/after_render', [ $this, 'ajax_response_after' ], 99 );
@@ -24,16 +26,163 @@ class ZIOR_Posts_Addon {
 	* @return void
 	*/
 	public function posts_form_widget_controls( $element, $args ) {
+
+		$element->start_controls_section(
+			'advanced_query_filter_section',
+			[
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				'label' => esc_html__( 'Advanced Query Filter', 'zior-elementor' ),
+			]
+		);
+
+		/**
+		 * Meta queries repeater
+		 */
+		$repeater = new Repeater();
+		$repeater->add_control(
+			'aqf_meta_query_relation',
+			[
+				'label'   => __( 'Query Relation', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'or',
+				'options' => [
+					'or'  => __( 'OR', 'zior-elementor' ),
+					'and' => __( 'AND', 'zior-elementor' ),
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_meta_query_key',
+			[
+				'label'   => __( 'Meta Key', 'zior-elementor' ),
+				'type'    => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_meta_query_value',
+			[
+				'label'   => __( 'Meta Value', 'zior-elementor' ),
+				'type'    => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_meta_query_compare',
+			[
+				'label'   => __( 'Compare', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'LIKE',
+				'options' => $this->getSupportedOperators(),
+			]
+		);
+
+		$element->add_control(
+			'aqf_meta_queries',
+			[
+				'label'       => __( 'Meta Queries', 'zior-elementor' ),
+				'type'        => Controls_Manager::REPEATER,
+				'show_label'  => true,
+				'fields'      => $repeater->get_controls(),
+				'default'     => [],
+				'separator'    => 'after',
+			]
+		);
+
+		/**
+		 * Taxonomy queries repeater
+		 */
+		$repeater = new Repeater();
+		$repeater->add_control(
+			'aqf_tax_query_relation',
+			[
+				'label'   => __( 'Query Relation', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'or',
+				'options' => [
+					'or'  => __( 'OR', 'zior-elementor' ),
+					'and' => __( 'AND', 'zior-elementor' ),
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_tax_query_taxonomy',
+			[
+				'label'   => __( 'Taxonomy', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'options' => $this->get_taxonomies(),
+				'dynamic' => [
+					'active' => true,
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_tax_query_field',
+			[
+				'label'   => __( 'Field', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'term_id',
+				'options' => [
+					'term_id'  => __( 'Term ID', 'zior-elementor' ),
+					'name' => __( 'Term Name', 'zior-elementor' ),
+					'slug' => __( 'Term Slug', 'zior-elementor' ),
+					'term_taxonomy_id' => __( 'Term Taxonomy ID', 'zior-elementor' ),
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_tax_query_value',
+			[
+				'label'   => __( 'Value', 'zior-elementor' ),
+				'type'    => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_tax_query_compare',
+			[
+				'label'   => __( 'Compare', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'LIKE',
+				'options' => $this->getSupportedOperators(),
+			]
+		);
+
+		$element->add_control(
+			'aqf_tax_queries',
+			[
+				'label'       => __( 'Taxonomy Queries', 'zior-elementor' ),
+				'type'        => Controls_Manager::REPEATER,
+				'show_label'  => true,
+				'fields'      => $repeater->get_controls(),
+				'default'     => [],
+			]
+		);
+
 		$element->add_control(
 			'show_empty_message',
 			[
-				'label'        => __( 'Show custom empty message?', 'zior-elementor' ),
+				'label'        => __( 'Empty message?', 'zior-elementor' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
 				'label_on'     => __( 'Yes', 'zior-elementor' ),
 				'label_off'    => __( 'No', 'zior-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 				'render_type'  => 'template',
+				'separator'    => 'before',
 			]
 		);
 
@@ -41,7 +190,7 @@ class ZIOR_Posts_Addon {
 			'custom_empty_message',
 			[
 				'type'        => \Elementor\Controls_Manager::WYSIWYG,
-				'rows'        => 4,
+				'rows'        => 2,
 				'label'       => __( 'Custom Empty message', 'zior-elementor' ),
 				'description' => __( 'Show message when posts result is empty', 'zior-elementor' ),
 				'condition'   => [
@@ -49,6 +198,8 @@ class ZIOR_Posts_Addon {
 				],
 			]
 		);
+
+		$element->end_controls_section();
 	}
 
 	/*
@@ -160,5 +311,26 @@ class ZIOR_Posts_Addon {
 			wp_send_json_success( $output['htmlCache'] );
 			exit;
 		}
+	}
+
+	public function getSupportedOperators() {
+		return [
+			'like' => 'LIKE',
+			'!='   => 'NOT EQUAL',
+			'<='   => 'LESS THAN OR EQUAL',
+			'>='   => 'GREATER THAN OR EQUAL',
+			'<'    => 'LESS THAN',
+			'>'    => 'GREATER THAN',
+		];
+	}
+
+	public function get_taxonomies() {
+		$taxonomies = [];
+		foreach( get_taxonomies( [], 'objects' ) as $key => $taxonomy ) {
+			$type = $taxonomy->object_type[0] ?? '';
+			$taxonomies[ $key ] = $taxonomy->label . '(' . $type . ')';
+		}
+
+		return $taxonomies;
 	}
 }
