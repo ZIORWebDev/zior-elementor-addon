@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "grunt-cli": "^1.4.3"
+  }
+}
