@@ -35,23 +35,23 @@ class ZIOR_Posts_Addon {
 			]
 		);
 
+		$element->add_control(
+			'aqf_meta_query_relation',
+			[
+				'label'        => __( 'Meta Query Relation', 'zior-elementor' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'AND', 'zior-elementor' ),
+				'label_off'    => __( 'OR', 'zior-elementor' ),
+				'return_value' => 'AND',
+				'default'      => 'OR',
+				'render_type'  => 'template'
+			]
+		);
+
 		/**
 		 * Meta queries repeater
 		 */
 		$repeater = new Repeater();
-		$repeater->add_control(
-			'aqf_meta_query_relation',
-			[
-				'label'   => __( 'Query Relation', 'zior-elementor' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'or',
-				'options' => [
-					'or'  => __( 'OR', 'zior-elementor' ),
-					'and' => __( 'AND', 'zior-elementor' ),
-				],
-			]
-		);
-
 		$repeater->add_control(
 			'aqf_meta_query_key',
 			[
@@ -70,6 +70,21 @@ class ZIOR_Posts_Addon {
 				'type'    => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'aqf_meta_query_compare_type',
+			[
+				'label'   => __( 'Data Type', 'zior-elementor' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'CHAR',
+				'options' => [
+					'CHAR'          => 'CHAR',
+					'NUMERIC'       => 'NUMERIC',
+					'DECIMAL(10,2)' => 'DECIMAL(10,2)',
+					'DATE'          => 'DATE',
 				],
 			]
 		);
@@ -96,23 +111,23 @@ class ZIOR_Posts_Addon {
 			]
 		);
 
+		$element->add_control(
+			'aqf_tax_query_relation',
+			[
+				'label'        => __( 'Taxonomy Query Relation', 'zior-elementor' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => __( 'AND', 'zior-elementor' ),
+				'label_off'    => __( 'OR', 'zior-elementor' ),
+				'return_value' => 'AND',
+				'default'      => 'OR',
+				'render_type'  => 'template'
+			]
+		);
+
 		/**
 		 * Taxonomy queries repeater
 		 */
 		$repeater = new Repeater();
-		$repeater->add_control(
-			'aqf_tax_query_relation',
-			[
-				'label'   => __( 'Query Relation', 'zior-elementor' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'or',
-				'options' => [
-					'or'  => __( 'OR', 'zior-elementor' ),
-					'and' => __( 'AND', 'zior-elementor' ),
-				],
-			]
-		);
-
 		$repeater->add_control(
 			'aqf_tax_query_taxonomy',
 			[
@@ -315,12 +330,17 @@ class ZIOR_Posts_Addon {
 
 	public function getSupportedOperators() {
 		return [
-			'like' => 'LIKE',
-			'!='   => 'NOT EQUAL',
-			'<='   => 'LESS THAN OR EQUAL',
-			'>='   => 'GREATER THAN OR EQUAL',
-			'<'    => 'LESS THAN',
-			'>'    => 'GREATER THAN',
+			'LIKE'        => 'LIKE',
+			'!='          => 'NOT EQUAL',
+			'<='          => 'LESS THAN OR EQUAL',
+			'>='          => 'GREATER THAN OR EQUAL',
+			'<'           => 'LESS THAN',
+			'>'           => 'GREATER THAN',
+			'IN'          => 'IN',
+			'NOT IN'      => 'NOT IN',
+			'BETWEEN'     => 'BETWEEN',
+			'NOT BETWEEN' => 'NOT BETWEEN',
+			'NOT LIKE'    => 'NOT LIKE',
 		];
 	}
 
