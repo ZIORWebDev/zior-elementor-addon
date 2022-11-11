@@ -1109,7 +1109,7 @@ class ZIOR_Slides extends Widget_Base {
 		<div class="app-main-banner">
 			<div class="swiper" dir="<?php Utils::print_unescaped_internal_string( $direction ); ?>" data-animation="<?php echo esc_attr( $settings['content_animation'] ); ?>">
 				<div class="swiper-wrapper">
-				<?php echo wp_kses( implode( '', $slides, wp_kses_allowed_html() ) ); ?>
+				<?php echo wp_kses( implode( '', $slides ), wp_kses_allowed_html() ); ?>
 				</div>
 				<div class="app-main-banner-controls-wrap">
 					<div class="app-main-banner-controls">
