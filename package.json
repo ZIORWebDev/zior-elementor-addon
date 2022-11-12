@@ -1,0 +1,24 @@
+{
+  "name": "zr-elementor-addon",
+  "title": "ZIOR Elementor Addon",
+  "description": "Plugin",
+  "version": "0.1.3",
+  "homepage": "https://ziorweb.dev",
+  "author": {
+    "name": "Reyborn Webservices",
+    "url": "https://ziorweb.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Reyborn-Webservices/zr-elementor-addon.git"
+  },
+  "dependencies": {
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-cssmin": "^4.0.0",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-contrib-qunit": "^6.2.1",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0"
+  }
+}

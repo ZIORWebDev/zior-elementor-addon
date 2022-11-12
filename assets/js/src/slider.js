@@ -1,3 +1,12 @@
+function updateDraggableControl(index, sliderCount,
+    $element) {
+    const draggableWidth = ((index / sliderCount) * 100) +
+        "%";
+    $element.find(".swiper-scrollbar-drag").css({
+        minWidth: draggableWidth,
+        width: draggableWidth
+    });
+}
 jQuery(window).on("elementor/frontend/init", function() {
     function addHandler($element) {
         const settings = $element.data("settings");
@@ -20,9 +29,9 @@ jQuery(window).on("elementor/frontend/init", function() {
         };
 
         if ("undefined" === typeof Swiper) {
-            const asyncSwiper = elementorFrontend.utils
+            const AsyncSwiper = elementorFrontend.utils
             .swiper;
-            new asyncSwiper($element.find(".swiper"),
+            new AsyncSwiper($element.find(".swiper"),
                 swiperConfig).then(function (swiper) {
                 updateDraggableControl(1, (parseInt(
                         swiper.slides.length
@@ -50,16 +59,6 @@ jQuery(window).on("elementor/frontend/init", function() {
             new Swiper($element.find(".swiper"),
             swiperConfig);
         }
-    }
-
-    function updateDraggableControl(index, sliderCount,
-        $element) {
-        const draggableWidth = ((index / sliderCount) * 100) +
-            "%";
-        $element.find(".swiper-scrollbar-drag").css({
-            minWidth: draggableWidth,
-            width: draggableWidth
-        });
     }
 
     elementorFrontend.hooks.addAction(
