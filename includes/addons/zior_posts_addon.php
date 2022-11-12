@@ -377,6 +377,11 @@ class ZIOR_Posts_Addon {
 
 		if ( ! empty( $query_id ) ) {
 			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 40, 2 );
+    }
+    
+		// Set query id as selector reference for search form and posts filter to interact
+		if ( 'posts' === $element->get_name() && ! empty( $query_id ) ) {
+			$element->add_render_attribute( '_wrapper', 'data-query-id', $query_id );
 		}
 
 		if ( $action == 'filter_posts_widget' && $is_ajax === 1 ) {
