@@ -11,10 +11,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ZIOR_Posts_Addon {
 	public function __construct() {
 		add_action( 'elementor/element/posts/section_query/after_section_end', [ $this, 'posts_form_widget_controls' ], 10, 2 );
-
 		add_action( 'elementor/frontend/before_render', [ $this, 'before_posts_render' ], 99 );
 		add_action( 'elementor/query/query_results', [ $this, 'query_results_not_found' ], 10, 2 );
 		add_action( 'elementor/frontend/after_render', [ $this, 'ajax_response_after' ], 99 );
+		add_action( 'elementor/editor/before_enqueue_styles', [ $this, 'widget_editor_styles' ] );
+	}
+
+	/*
+	* Custom editor style
+	* 
+	* @return void
+	*/
+	function widget_editor_styles() {
+		wp_register_style( 'zr-editor', ZIOR_PLUGIN_URL . 'assets/css/editor.css' );	
+		wp_enqueue_style( 'zr-editor' );
 	}
 
 	/*
@@ -53,29 +63,29 @@ class ZIOR_Posts_Addon {
 		 */
 		$repeater = new Repeater();
 		$repeater->add_control(
-			'aqf_meta_query_key',
+			'key',
 			[
-				'label'   => __( 'Meta Key', 'zior-elementor' ),
-				'type'    => Controls_Manager::TEXT,
-				'dynamic' => [
+				'label'    => __( 'Meta Key', 'zior-elementor' ),
+				'type'     => Controls_Manager::TEXT,
+				'dynamic'  => [
 					'active' => true,
 				],
 			]
 		);
 
 		$repeater->add_control(
-			'aqf_meta_query_value',
+			'value',
 			[
-				'label'   => __( 'Meta Value', 'zior-elementor' ),
-				'type'    => Controls_Manager::TEXT,
-				'dynamic' => [
+				'label'    => __( 'Meta Value', 'zior-elementor' ),
+				'type'     => Controls_Manager::TEXT,
+				'dynamic'  => [
 					'active' => true,
 				],
 			]
 		);
 
 		$repeater->add_control(
-			'aqf_meta_query_compare_type',
+			'type',
 			[
 				'label'   => __( 'Data Type', 'zior-elementor' ),
 				'type'    => Controls_Manager::SELECT,
@@ -90,12 +100,13 @@ class ZIOR_Posts_Addon {
 		);
 
 		$repeater->add_control(
-			'aqf_meta_query_compare',
+			'compare',
 			[
 				'label'   => __( 'Compare', 'zior-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'LIKE',
 				'options' => $this->getSupportedOperators(),
+				'description' => 'For (IN and NOT IN), enter comma separated values.'
 			]
 		);
 
@@ -129,7 +140,7 @@ class ZIOR_Posts_Addon {
 		 */
 		$repeater = new Repeater();
 		$repeater->add_control(
-			'aqf_tax_query_taxonomy',
+			'taxonomy',
 			[
 				'label'   => __( 'Taxonomy', 'zior-elementor' ),
 				'type'    => Controls_Manager::SELECT,
@@ -141,11 +152,12 @@ class ZIOR_Posts_Addon {
 		);
 
 		$repeater->add_control(
-			'aqf_tax_query_field',
+			'field',
 			[
 				'label'   => __( 'Field', 'zior-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'term_id',
+				'classes' => 'zior-taxonomy-field',
 				'options' => [
 					'term_id'  => __( 'Term ID', 'zior-elementor' ),
 					'name' => __( 'Term Name', 'zior-elementor' ),
@@ -156,23 +168,24 @@ class ZIOR_Posts_Addon {
 		);
 
 		$repeater->add_control(
-			'aqf_tax_query_value',
+			'terms',
 			[
-				'label'   => __( 'Value', 'zior-elementor' ),
-				'type'    => Controls_Manager::TEXT,
-				'dynamic' => [
+				'label'    => __( 'Terms', 'zior-elementor' ),
+				'type'     => Controls_Manager::TEXT,
+				'dynamic'  => [
 					'active' => true,
 				],
 			]
 		);
 
 		$repeater->add_control(
-			'aqf_tax_query_compare',
+			'operator',
 			[
 				'label'   => __( 'Compare', 'zior-elementor' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'LIKE',
 				'options' => $this->getSupportedOperators(),
+				'description' => 'For (IN and NOT IN), enter comma separated values.'
 			]
 		);
 
@@ -243,6 +256,90 @@ class ZIOR_Posts_Addon {
 	* @return object
 	*/
 	function custom_query_callback( $query, $widget ) {
+		/**
+		 * Advanced query filters
+		 */
+		$settings = $widget->get_settings();
+		$meta_queries_relation = $settings['aqf_meta_query_relation'] ?? 'OR';
+		$meta_queries = $settings['aqf_meta_queries'];
+		$available_meta_queries = [];
+		$convert_to_array = [ 'IN', 'NOT IN' ];
+
+		foreach( $meta_queries as $meta_query ) {
+			if ( ! empty( trim( $meta_query['key'] ) ) && ! empty( trim( $meta_query['value'] ) ) ) {
+				$value = $meta_query['value'];
+				if ( in_array( $meta_query['compare'], $convert_to_array ) ) {
+					$value = array_map( 'trim', explode( ',', $value ) );
+				}
+
+				$available_meta_queries[] = [
+					'key'     => $meta_query['key'],
+					'value'   => $value,
+					'type'    => $meta_query['type'],
+					'compare' => $meta_query['compare'],
+				];
+			}
+		}
+
+		if ( ! empty( $available_meta_queries ) ) {
+			$query->set( 'meta_query', [
+				'relation' => ! empty( $meta_queries_relation ) ? $meta_queries_relation : 'OR',
+				$available_meta_queries
+			] );
+		}
+
+		$tax_queries_relation = $settings['aqf_tax_query_relation'];
+		$tax_queries = $settings['aqf_tax_queries'];
+		$available_tax_queries = [];
+
+		foreach( $tax_queries as $tax_query ) {
+			if ( ! empty( trim( $tax_query['taxonomy'] ) ) && ! empty( trim( $tax_query['terms'] ) ) ) {
+				$terms = $tax_query['terms'];
+				if ( in_array( $tax_query['operator'], $convert_to_array ) ) {
+					$terms = array_map( 'trim', explode( ',', $terms ) );
+				}
+				$available_tax_queries[] = [
+					'taxonomy' => $tax_query['taxonomy'],
+					'field'    => $tax_query['field'],
+					'terms'    => $terms,
+					'operator' => $tax_query['operator'],
+				];
+			}
+		}
+
+		$term_id = trim( sanitize_text_field( $_GET['term_id'] ?? '' ) );
+		$taxonomy = trim( sanitize_title( $_GET['taxonomy'] ?? '' ) );
+		if ( ! empty( $term_id ) && ! empty( $taxonomy ) ) {
+			$available_tax_queries[] = [
+				'taxonomy' => $taxonomy,
+				'field'    => 'term_id',
+				'terms'    => $term_id,
+				'operator' => '=',
+			];
+		}
+		
+		if ( ! empty( $available_tax_queries ) ) {
+			$query->set( 'tax_query', [
+				'relation' => ! empty( $tax_queries_relation ) ? $tax_queries_relation : 'OR',
+				$available_tax_queries
+			] );
+
+			// Build queried terms
+			$queried_terms = [];
+			foreach( $available_tax_queries as $tax_query ) {
+				$queried_terms[] = [
+					$tax_query['taxonomy'] => [
+						'terms' => $tax_query['terms'],
+						'field' => $tax_query['field']
+					]
+				];
+			}
+			$query->tax_query->queried_terms = $queried_terms;
+		}
+
+		/**
+		 * Posts filter queries
+		 */
 		$keyword = sanitize_text_field( $_GET['keyword'] ?? '' );
 		if ( ! empty( $keyword ) ) {
 			$query->query_vars['s'] = $keyword;
@@ -262,23 +359,6 @@ class ZIOR_Posts_Addon {
 		$page_num = ( $page_num === 0 ) ? 1 : $page_num;
 		$query->query_vars['paged'] = $page_num;
 
-		$term = get_term( sanitize_text_field( $_GET['term_id'] ?? '' ) );
-		if ( ! is_wp_error( $term ) ) {
-			$taxonomy = sanitize_title( $_GET['taxonomy'] ?? '' );
-			$query->query_vars[ $taxonomy ] = $term->slug ?? '';
-			$query->tax_query->queries[0] = [
-				'taxonomy' => $taxonomy,
-				'terms'    => [ $term->slug ?? '' ],
-				'field'    => 'slug',
-				'operator' => 'IN'
-			];
-
-			$query->tax_query->queried_terms[ $taxonomy ] = [
-				'terms' => [ $term->slug ?? '' ],
-				'field' => 'slug'
-			];
-		}
-
 		return $query;
 	}
 
@@ -294,9 +374,9 @@ class ZIOR_Posts_Addon {
 		$is_ajax  = absint( sanitize_text_field( $_GET['is_ajax'] ?? 0 ) );
 		$settings = $element->get_settings();
 		$query_id = $settings['posts_query_id'] ?? '';
-		
-		if ( $action == 'filter_posts_widget' ) {
-			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 10, 2 );
+
+		if ( ! empty( $query_id ) ) {
+			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 40, 2 );
 		}
 
 		if ( $action == 'filter_posts_widget' && $is_ajax === 1 ) {
@@ -330,12 +410,13 @@ class ZIOR_Posts_Addon {
 
 	public function getSupportedOperators() {
 		return [
-			'LIKE'        => 'LIKE',
+			'='           => 'EQUAL',
 			'!='          => 'NOT EQUAL',
 			'<='          => 'LESS THAN OR EQUAL',
 			'>='          => 'GREATER THAN OR EQUAL',
 			'<'           => 'LESS THAN',
 			'>'           => 'GREATER THAN',
+			'LIKE'        => 'LIKE',
 			'IN'          => 'IN',
 			'NOT IN'      => 'NOT IN',
 			'BETWEEN'     => 'BETWEEN',
