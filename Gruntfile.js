@@ -162,6 +162,16 @@ module.exports = function(grunt) {
 			build: ['build/<%= pkg.name %>'],
 			release: ['release']
 		},
+		git_changelog: {
+			extended: {
+				options: {
+					app_name : 'ZIOR Elementor Addon Changelog',
+					file : 'changelog.md',
+					grep_commits: '^fix|^feat|^docs|^refactor|^chore|BREAKING|^updated|^adjusted',
+					tag : false
+				}
+			}
+		},
 		wp_deploy: {
 			deploy: { 
 				options: {
@@ -184,6 +194,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-git');
+	grunt.loadNpmTasks('git-changelog');
 	grunt.loadNpmTasks('grunt-wp-deploy');
 
 	grunt.registerTask('test', ['jshint']);
@@ -191,6 +202,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('js', ['uglify']);
 	grunt.registerTask('default', ['js', 'css']);
 	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
+	grunt.registerTask( 'do_changelog', ['git_changelog'] );
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
 	grunt.registerTask('do_svn', ['clean', 'copy', 'wp_deploy']);
