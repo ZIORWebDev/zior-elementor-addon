@@ -92,6 +92,20 @@ module.exports = function(grunt) {
 					'!yarn.lock'
 				],
 				dest: 'release/<%= pkg.version %>/'
+			},
+			svn_trunk: {
+				cwd: 'release/<%= pkg.version %>',
+				src:  [
+					'**/*',
+				],
+				dest: 'build/<%= pkg.name %>/trunk/'
+			},
+			svn_tag: {
+				cwd: 'release/<%= pkg.version %>',
+				src:  [
+					'**/*',
+				],
+				dest: 'build/<%= pkg.name %>/tags/<%= pkg.version %>/'
 			}
 		},
 		compress: {
@@ -193,12 +207,12 @@ module.exports = function(grunt) {
 
 	//TODO CLEAN
 	grunt.registerTask('test', ['jshint']);
-	grunt.registerTask( 'css', ['cssmin'] );
-	grunt.registerTask( 'js', ['uglify'] );
-	grunt.registerTask( 'default', ['test', 'js', 'css'] );
-	grunt.registerTask( 'version_number', [ 'replace:readme', 'replace:php' ] );
-	grunt.registerTask( 'pre_vcs', [ 'version_number' ] );
-	grunt.registerTask( 'do_git', [  'gitcommit', 'gittag', 'gitpush' ] );
-	grunt.registerTask( 'do_svn', [ 'svn_checkout', 'copy:svn_trunk', 'copy:svn_tag', 'push_svn' ] );
-	grunt.registerTask( 'release', [ 'pre_vcs', 'do_svn', 'do_git'  ] );
+	grunt.registerTask('css', ['cssmin']);
+	grunt.registerTask('js', ['uglify']);
+	grunt.registerTask('default', ['test', 'js', 'css']);
+	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
+	grunt.registerTask('pre_vcs', ['version_number']);
+	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
+	grunt.registerTask('do_svn', ['svn_checkout', 'copy:svn_trunk', 'copy:svn_tag']);
+	grunt.registerTask('release', ['pre_vcs', 'do_svn', 'do_git']);
 };
