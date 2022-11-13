@@ -74,6 +74,58 @@ module.exports = function(grunt) {
 					debounceDelay: 500
 				}
 			}
+		},
+		copy: {
+			main: {
+				src:  [
+					'**',
+					'!node_modules/**',
+					'!release/**',
+					'!.git/**',
+					'!css/src/**',
+					'!js/src/**',
+					'!Gruntfile.js',
+					'!package.json',
+					'!.gitignore',
+					'!.github',
+					'!README.md',
+					'!yarn.lock'
+				],
+				dest: 'release/<%= pkg.version %>/'
+			}
+		},
+		compress: {
+			main: {
+				options: {
+					mode: 'zip',
+					archive: './release/zr-elementor-addon.<%= pkg.version %>.zip'
+				},
+				expand: true,
+				cwd: 'release/<%= pkg.version %>/',
+				src: ['**/*'],
+				dest: 'zr-elementor-addon/'
+			}
+		},
+		replace: {
+			readme: {
+				src: ['readme.txt'],
+				overwrite: true,
+				replacements: [{
+					from: /Stable tag: (.*)/,
+					to: "Stable tag: <%= pkg.version %>"
+				}]
+			},
+			php: {
+				src: ['zr-elementor.php'],
+				overwrite: true,
+				replacements: [{
+					from: /Version:\s*(.*)/,
+					to: "Version: <%= pkg.version %>"
+				}, {
+					from: /protected \$version = \s*'(.*)'\s*;/,
+					to: "protected $version = '<%= pkg.version %>';"
+				}]
+			}
 		}
 	});
 
@@ -81,7 +133,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-text-replace');
+	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 
+	//TODO CLEAN
 	grunt.registerTask('test', ['jshint']);
 	grunt.registerTask( 'css', ['cssmin'] );
 	grunt.registerTask( 'js', ['uglify'] );
