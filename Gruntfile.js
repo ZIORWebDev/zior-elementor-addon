@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 			 }
 		},
 		clean: {
-			build: ['build/<%= pkg.name %>'],
+			build: ['build'],
 			release: ['release']
 		},
 		git_changelog: {
