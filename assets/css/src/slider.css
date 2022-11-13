@@ -1,0 +1,27 @@
+.app-main-banner .swiper-slide {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.app-main-banner-controls-wrap {
+    background-color: #344F5F;
+    color: #FFF;
+    margin-top: -10%;
+    max-width: 30%;
+    width: 100%;
+    position: absolute;
+    padding: 38px 56px 30px 100px;
+    z-index: 99;
+}
+
+.app-main-banner-controls .swiper-pagination {
+    position: absolute;
+    top: 38px;
+    left: -30px;
+    text-align: right;
+}
+.app-home-slider .swiper-scrollbar-drag{
+    transform: none !important;
+}

@@ -26,13 +26,26 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		wp_register_script( 'zior-posts-filter', ZIOR_PLUGIN_URL . 'assets/js/posts-filter.js', array( 'jquery' ), NULL, true );
-		return [ 'zior-posts-filter' ];
+		$assets[] = [
+			'handle' => 'posts-filter',
+			'type' => 'js',
+			'path' => ZIOR_PLUGIN_URL . 'assets/js/',
+			'name' => 'posts-filter',
+			'dependencies' => [ 'jquery' ],
+		];
+		zior_enqueue_assets( $assets );
+		return [ 'posts-filter' ];
 	}
 	
 	public function get_style_depends() {
-		wp_register_style( 'zior-main', ZIOR_PLUGIN_URL . 'assets/css/main.css' );
-		return [ 'zior-main' ];
+		$assets[] = [
+			'handle' => 'posts-filter',
+			'type' => 'css',
+			'path' => ZIOR_PLUGIN_URL . 'assets/css/',
+			'name' => 'posts-filter',
+		];
+		zior_enqueue_assets( $assets );
+		return [ 'posts-filter' ];
 	}
 
 	protected function register_controls() {

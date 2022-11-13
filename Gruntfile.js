@@ -64,14 +64,14 @@ module.exports = function(grunt) {
 				files: ['assets/css/**/*.css'],
 				tasks: ['css'],
 				options: {
-					debounceDelay: 500
+					debounceDelay: 250
 				}
 			},
 			scripts: {
 				files: ['assets/js/src/**/*.js'],
 				tasks: ['test', 'js'],
 				options: {
-					debounceDelay: 500
+					debounceDelay: 250
 				}
 			}
 		},
@@ -82,8 +82,8 @@ module.exports = function(grunt) {
 					'!node_modules/**',
 					'!release/**',
 					'!.git/**',
-					'!css/src/**',
-					'!js/src/**',
+					'!assets/css/src/**',
+					'!assets/js/src/**',
 					'!Gruntfile.js',
 					'!package.json',
 					'!.gitignore',
@@ -126,7 +126,57 @@ module.exports = function(grunt) {
 					to: "protected $version = '<%= pkg.version %>';"
 				}]
 			}
-		}
+		},
+		gittag: {
+			addtag: {
+				options: {
+					tag: '<%= pkg.version %>',
+					message: 'Version <%= pkg.version %>'
+				}
+			}
+		 },
+		 gitcommit: {
+			 commit: {
+				 options: {
+					 message: 'Version <%= pkg.version %>',
+					 noVerify: true,
+					 noStatus: false,
+					 allowEmpty: true
+				 },
+				 files: {
+					 src: [ 'readme.txt', 'zr-elementor.php', 'package.json' ]
+				 }
+			 }
+		 },
+		 gitpush: {
+			 push: {
+				 options: {
+					 tags: true,
+					 remote: 'origin',
+					 branch: 'origin/main'
+				 }
+			 }
+		 },
+		 svn_checkout: {
+			make_local: {
+				repos: [
+					{
+						path: [ 'build' ],
+						repo: 'http://plugins.svn.wordpress.org/zr-elementor-addon'
+					}
+				]
+			}
+			},
+		 push_svn: {
+			 options: {
+				 remove: true
+			 },
+			 main: {
+				 src: 'build/<%= pkg.name %>',
+				 dest: 'http://plugins.svn.wordpress.org/zr-elementor-addon',
+				 tmp: 'build/make_svn'
+			 }
+		 }
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -137,10 +187,16 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-text-replace');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-git');
 
 	//TODO CLEAN
 	grunt.registerTask('test', ['jshint']);
 	grunt.registerTask( 'css', ['cssmin'] );
 	grunt.registerTask( 'js', ['uglify'] );
 	grunt.registerTask( 'default', ['test', 'js', 'css'] );
+	grunt.registerTask( 'version_number', [ 'replace:readme', 'replace:php' ] );
+	grunt.registerTask( 'pre_vcs', [ 'version_number' ] );
+	grunt.registerTask( 'do_git', [  'gitcommit', 'gittag', 'gitpush' ] );
+	grunt.registerTask( 'do_svn', [ 'svn_checkout', 'copy:svn_trunk', 'copy:svn_tag', 'push_svn' ] );
+	grunt.registerTask( 'release', [ 'pre_vcs', 'do_svn', 'do_git'  ] );
 };

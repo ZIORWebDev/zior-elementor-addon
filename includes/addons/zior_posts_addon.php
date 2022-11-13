@@ -22,9 +22,15 @@ class ZIOR_Posts_Addon {
 	* 
 	* @return void
 	*/
-	function widget_editor_styles() {
-		wp_register_style( 'zr-editor', ZIOR_PLUGIN_URL . 'assets/css/editor.css' );	
-		wp_enqueue_style( 'zr-editor' );
+	public function widget_editor_styles() {
+		$assets[] = [
+			'handle' => 'zior-editor',
+			'type' => 'css',
+			'path' => ZIOR_PLUGIN_URL . 'assets/css/',
+			'name' => 'editor',
+			'name' => 'editor',
+		];
+		zior_enqueue_assets( $assets );
 	}
 
 	/*

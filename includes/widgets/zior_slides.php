@@ -32,13 +32,26 @@ class ZIOR_Slides extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		wp_register_script( 'zior-slider', ZIOR_PLUGIN_URL . 'assets/js/slider.js', array( 'jquery' ), NULL, true );
-		return [ 'swiper', 'zior-slider' ];
+		$assets[] = [
+			'handle' => 'zior-slider',
+			'type' => 'js',
+			'path' => ZIOR_PLUGIN_URL . 'assets/js/',
+			'name' => 'slider',
+			'dependencies' => [ 'jquery' ],
+		];
+		zior_enqueue_assets( $assets );
 	}
 	
 	public function get_style_depends() {
-		wp_register_style( 'zior-main', ZIOR_PLUGIN_URL . 'assets/css/main.css' );
-		return [ 'zior-main' ];
+		$assets[] = [
+			'handle' => 'zior-slider',
+			'type' => 'css',
+			'path' => ZIOR_PLUGIN_URL . 'assets/css/',
+			'name' => 'slider',
+		];
+		zior_enqueue_assets( $assets );
+		
+		return [ 'zior-slider' ];
 	}
 
 	public static function get_button_sizes() {
