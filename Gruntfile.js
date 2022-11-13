@@ -99,7 +99,7 @@ module.exports = function(grunt) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: './release/zr-elementor-addon.<%= pkg.version %>.zip'
+					archive: './release/<%= pkg.name %>.<%= pkg.version %>.zip'
 				},
 				expand: true,
 				cwd: 'release/<%= pkg.version %>/',
@@ -165,7 +165,7 @@ module.exports = function(grunt) {
 		git_changelog: {
 			extended: {
 				options: {
-					app_name : 'ZIOR Elementor Addon Changelog',
+					app_name : '<%= pkg.title %> Changelog',
 					file : 'changelog.md',
 					grep_commits: '^fix|^feat|^docs|^refactor|^chore|BREAKING|^updated|^adjusted',
 					tag : false
@@ -175,7 +175,7 @@ module.exports = function(grunt) {
 		wp_deploy: {
 			deploy: { 
 				options: {
-					plugin_slug: 'zr-elementor-addon',
+					plugin_slug: '<%= pkg.name %>',
 					plugin_main_file: 'zr-elementor.php',
 					svn_url: 'https://plugins.svn.wordpress.org/zr-elementor-addon',
 					svn_user: 'reygcalantaol',
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('js', ['uglify']);
 	grunt.registerTask('default', ['js', 'css']);
 	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
-	grunt.registerTask( 'do_changelog', ['git_changelog'] );
+	grunt.registerTask('do_changelog', ['git_changelog']);
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
 	grunt.registerTask('do_svn', ['clean', 'copy', 'wp_deploy']);
