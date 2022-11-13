@@ -205,14 +205,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-svn-checkout');
 	grunt.loadNpmTasks('grunt-push-svn');
 
-	//TODO CLEAN
 	grunt.registerTask('test', ['jshint']);
 	grunt.registerTask('css', ['cssmin']);
 	grunt.registerTask('js', ['uglify']);
-	grunt.registerTask('default', ['test', 'js', 'css']);
+	grunt.registerTask('default', ['js', 'css']);
 	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
-	grunt.registerTask('do_svn', ['svn_checkout', 'copy:svn_trunk', 'copy:svn_tag']);
-	grunt.registerTask('release', ['pre_vcs', 'do_svn', 'do_git']);
+	grunt.registerTask('do_svn', ['svn_checkout', 'copy:main', 'copy:svn_trunk', 'copy:svn_tag', 'push_svn']);
+	grunt.registerTask('release', ['default', 'pre_vcs', 'do_svn', 'do_git']);
 };
