@@ -89,23 +89,10 @@ module.exports = function(grunt) {
 					'!.gitignore',
 					'!.github',
 					'!README.md',
+					'!build',
 					'!yarn.lock'
 				],
-				dest: 'release/<%= pkg.version %>/'
-			},
-			svn_trunk: {
-				cwd: 'release/<%= pkg.version %>',
-				src:  [
-					'**/*',
-				],
-				dest: 'build/<%= pkg.name %>/trunk/'
-			},
-			svn_tag: {
-				cwd: 'release/<%= pkg.version %>',
-				src:  [
-					'**/*',
-				],
-				dest: 'build/<%= pkg.name %>/tags/<%= pkg.version %>/'
+				dest: 'release/'
 			}
 		},
 		compress: {
@@ -117,7 +104,7 @@ module.exports = function(grunt) {
 				expand: true,
 				cwd: 'release/<%= pkg.version %>/',
 				src: ['**/*'],
-				dest: 'zr-elementor-addon/'
+				dest: '<%= pkg.name %>/'
 			}
 		},
 		replace: {
@@ -161,8 +148,8 @@ module.exports = function(grunt) {
 					 src: [ 'readme.txt', 'zr-elementor.php', 'package.json' ]
 				 }
 			 }
-		 },
-		 gitpush: {
+		},
+		gitpush: {
 			 push: {
 				 options: {
 					 tags: true,
@@ -170,27 +157,23 @@ module.exports = function(grunt) {
 					 branch: 'origin/main'
 				 }
 			 }
-		 },
-		 svn_checkout: {
-			make_local: {
-				repos: [
-					{
-						path: [ 'build' ],
-						repo: 'http://plugins.svn.wordpress.org/zr-elementor-addon'
-					}
-				]
+		},
+		clean: {
+			build: ['build/<%= pkg.name %>'],
+			release: ['release']
+		},
+		wp_deploy: {
+			deploy: { 
+				options: {
+					plugin_slug: 'zr-elementor-addon',
+					plugin_main_file: 'zr-elementor.php',
+					svn_url: 'https://plugins.svn.wordpress.org/zr-elementor-addon',
+					svn_user: 'reygcalantaol',
+					build_dir: 'release/', //relative path to your build directory
+					tmp_dir: 'build/'
+				},
 			}
-			},
-		 push_svn: {
-			 options: {
-				 remove: true
-			 },
-			 main: {
-				 src: 'build/<%= pkg.name %>',
-				 dest: 'http://plugins.svn.wordpress.org/zr-elementor-addon',
-				 tmp: 'build/make_svn'
-			 }
-		 }
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -199,11 +182,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-text-replace');
-	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-git');
-	grunt.loadNpmTasks('grunt-svn-checkout');
-	grunt.loadNpmTasks('grunt-push-svn');
+	grunt.loadNpmTasks('grunt-wp-deploy');
 
 	grunt.registerTask('test', ['jshint']);
 	grunt.registerTask('css', ['cssmin']);
@@ -212,6 +193,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
-	grunt.registerTask('do_svn', ['svn_checkout', 'copy:main', 'copy:svn_trunk', 'copy:svn_tag', 'push_svn']);
+	grunt.registerTask('do_svn', ['clean', 'copy', 'wp_deploy']);
 	grunt.registerTask('release', ['default', 'pre_vcs', 'do_svn', 'do_git']);
 };
