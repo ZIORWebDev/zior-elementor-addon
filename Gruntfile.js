@@ -86,6 +86,7 @@ module.exports = function(grunt) {
 					'!assets/js/src/**',
 					'!Gruntfile.js',
 					'!package.json',
+					'!package-lock.json',
 					'!.gitignore',
 					'!.github',
 					'!README.md',
