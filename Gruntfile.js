@@ -188,6 +188,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-git');
+	grunt.loadNpmTasks('grunt-svn-checkout');
+	grunt.loadNpmTasks('grunt-push-svn');
 
 	//TODO CLEAN
 	grunt.registerTask('test', ['jshint']);
