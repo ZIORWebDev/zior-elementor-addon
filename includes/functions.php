@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function zior_enqueue_assets( $assets ) {
 	foreach( $assets as $asset ) {
 		$is_dev = defined( 'ZIOR_DEV' ) && ZIOR_DEV ? true : false;

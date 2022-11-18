@@ -24,6 +24,10 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	public function get_keywords() {
 		return [ 'posts', 'posts widget', 'filters' ];
 	}
+	
+	public function get_categories() {
+		return [ 'zior' ];
+	}
 
 	public function get_script_depends() {
 		$assets[] = [

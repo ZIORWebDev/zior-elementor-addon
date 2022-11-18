@@ -22,6 +22,10 @@
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Main ZIOR_Elementor_Addon class.
  */
@@ -68,6 +72,7 @@ final class ZIOR_Elementor_Addon {
 		require_once ZIOR_PLUGIN_DIR . 'includes/actions.php';
 		require_once ZIOR_PLUGIN_DIR . 'includes/widgets/widgets.php';
 		require_once ZIOR_PLUGIN_DIR . 'includes/addons/addons.php';
+		require_once ZIOR_PLUGIN_DIR . 'includes/tags/tags.php';
 		require_once ZIOR_PLUGIN_DIR . 'includes/shortcodes/shortcodes.php';
 	}
 
