@@ -203,7 +203,6 @@ class ZIOR_Posts_Addon {
 				'show_label'  => true,
 				'fields'      => $repeater->get_controls(),
 				'default'     => [],
-				'separator'   => 'after',
 			]
 		);
 
@@ -214,7 +213,7 @@ class ZIOR_Posts_Addon {
 				'rows'        => 2,
 				'label'       => __( 'Post Ids', 'zior-elementor' ),
 				'description' => __( 'Filter posts by comma separated ids.', 'zior-elementor' ),
-				'separator'    => 'after',
+				'separator'    => 'before',
 				'dynamic'  => [
 					'active' => true,
 				],
@@ -359,7 +358,10 @@ class ZIOR_Posts_Addon {
 			}
 			$query->tax_query->queried_terms = $queried_terms;
 		}
-		
+
+		/**
+		 * Filter posts by array of post ids
+		 */
 		$post_ids = $settings['post_ids'];
 		if ( ! empty( $post_ids ) ) {
 			$post_ids = explode( ',', $post_ids );
@@ -367,7 +369,7 @@ class ZIOR_Posts_Addon {
 		}
 
 		/**
-		 * Posts filter queries
+		 * Filter posts by query vars
 		 */
 		$keyword = sanitize_text_field( $_GET['keyword'] ?? '' );
 		if ( ! empty( $keyword ) ) {
