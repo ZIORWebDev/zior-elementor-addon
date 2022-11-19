@@ -207,6 +207,22 @@ class ZIOR_Posts_Addon {
 		);
 
 		$element->add_control(
+			'post_ids',
+			[
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'rows'        => 2,
+				'label'       => __( 'Post Ids', 'zior-elementor' ),
+				'description' => __( 'Filter posts by comma separated ids.', 'zior-elementor' ),
+				'separator'    => 'before',
+				'dynamic'  => [
+					'active' => true,
+				],
+				'frontend_available' => true,
+				'render_type'  => 'template',
+			]
+		);
+
+		$element->add_control(
 			'show_empty_message',
 			[
 				'label'        => __( 'Empty message?', 'zior-elementor' ),
@@ -265,7 +281,7 @@ class ZIOR_Posts_Addon {
 		/**
 		 * Advanced query filters
 		 */
-		$settings = $widget->get_settings();
+		$settings = $widget->get_settings_for_display();
 		$meta_queries_relation = $settings['aqf_meta_query_relation'] ?? 'OR';
 		$meta_queries = $settings['aqf_meta_queries'];
 		$available_meta_queries = [];
@@ -344,7 +360,16 @@ class ZIOR_Posts_Addon {
 		}
 
 		/**
-		 * Posts filter queries
+		 * Filter posts by array of post ids
+		 */
+		$post_ids = $settings['post_ids'];
+		if ( ! empty( $post_ids ) ) {
+			$post_ids = explode( ',', $post_ids );
+			$query->set( 'post__in', $post_ids );
+		}
+
+		/**
+		 * Filter posts by query vars
 		 */
 		$keyword = sanitize_text_field( $_GET['keyword'] ?? '' );
 		if ( ! empty( $keyword ) ) {
@@ -383,8 +408,8 @@ class ZIOR_Posts_Addon {
 
 		if ( ! empty( $query_id ) ) {
 			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 40, 2 );
-    }
-    
+		}
+
 		// Set query id as selector reference for search form and posts filter to interact
 		if ( 'posts' === $element->get_name() && ! empty( $query_id ) ) {
 			$element->add_render_attribute( '_wrapper', 'data-query-id', $query_id );

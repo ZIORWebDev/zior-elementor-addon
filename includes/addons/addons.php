@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 spl_autoload_register( function ( $class ) {
 	$allowed_class = [
 		'zior_posts_addon',
