@@ -6,7 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function zior_register_elementor_tags( $tags ) {
 	spl_autoload_register( function ( $class ) {
 
-		$allowed_class = [];
+		$allowed_class = [
+			'zior_acfextras_tag'
+		];
 
 		if ( ! in_array( strtolower( $class ), $allowed_class ) ) {
 			return;
@@ -15,7 +17,6 @@ function zior_register_elementor_tags( $tags ) {
 		include strtolower( $class ) . '.php';
 	});
 
-	//$tags->register( new ZIOR_Slides() );
-	//$tags->register( new ZIOR_Posts_Filters() );
+	$tags->register( new ZIOR_ACFExtras_Tag() );
 }
 add_action( 'elementor/dynamic_tags/register', 'zior_register_elementor_tags', 10 );
