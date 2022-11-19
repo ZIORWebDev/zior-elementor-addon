@@ -203,6 +203,23 @@ class ZIOR_Posts_Addon {
 				'show_label'  => true,
 				'fields'      => $repeater->get_controls(),
 				'default'     => [],
+				'separator'   => 'after',
+			]
+		);
+
+		$element->add_control(
+			'post_ids',
+			[
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'rows'        => 2,
+				'label'       => __( 'Post Ids', 'zior-elementor' ),
+				'description' => __( 'Filter posts by comma separated ids.', 'zior-elementor' ),
+				'separator'    => 'after',
+				'dynamic'  => [
+					'active' => true,
+				],
+				'frontend_available' => true,
+				'render_type'  => 'template',
 			]
 		);
 
@@ -265,7 +282,7 @@ class ZIOR_Posts_Addon {
 		/**
 		 * Advanced query filters
 		 */
-		$settings = $widget->get_settings();
+		$settings = $widget->get_settings_for_display();
 		$meta_queries_relation = $settings['aqf_meta_query_relation'] ?? 'OR';
 		$meta_queries = $settings['aqf_meta_queries'];
 		$available_meta_queries = [];
@@ -342,6 +359,12 @@ class ZIOR_Posts_Addon {
 			}
 			$query->tax_query->queried_terms = $queried_terms;
 		}
+		
+		$post_ids = $settings['post_ids'];
+		if ( ! empty( $post_ids ) ) {
+			$post_ids = explode( ',', $post_ids );
+			$query->set( 'post__in', $post_ids );
+		}
 
 		/**
 		 * Posts filter queries
@@ -383,8 +406,8 @@ class ZIOR_Posts_Addon {
 
 		if ( ! empty( $query_id ) ) {
 			add_action( "elementor/query/{$query_id}", [ $this, 'custom_query_callback' ], 40, 2 );
-    }
-    
+		}
+
 		// Set query id as selector reference for search form and posts filter to interact
 		if ( 'posts' === $element->get_name() && ! empty( $query_id ) ) {
 			$element->add_render_attribute( '_wrapper', 'data-query-id', $query_id );

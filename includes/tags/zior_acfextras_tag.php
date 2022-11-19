@@ -191,7 +191,6 @@ class ZIOR_ACFExtras_Tag extends Tag {
 
 	public function get_tag_value_field( $key ) {
 		$key = $this->get_settings( $key );
-
 		if ( ! empty( $key ) ) {
 			list( $field_key, $meta_key ) = explode( ':', $key );
 			$document = Plugin::elementor()->documents->get_current();
@@ -220,15 +219,28 @@ class ZIOR_ACFExtras_Tag extends Tag {
 	 * @return void
 	 */
 	public function render() {
-		$value = 0;
-		
+		$value = '';
 		// Make sure that ACF if installed and activated
-		if ( ! function_exists( 'get_field' ) ) {	
+		if ( ! function_exists( 'get_field' ) ) {
 			echo 0;
 			return;
 		}
 		
 		$field = $this->get_tag_value_field( 'acf_key' );
-		return $field['value'];
+
+		if ( is_array( $field['value'] ) && $field['return_format'] === 'object' ) {
+			$value = array_column( $field['value'], 'ID' );
+			$value = implode( ',', $value );
+		} elseif ( is_array( $field['value'] ) && $field['return_format'] === 'id' ) {
+			$value = implode( ',', $field['value'] );
+		}else{
+			$value = $field['value'];
+		}
+
+		if ( is_array( $value ) ) {
+			$value = implode( ',', $value );
+		}
+
+		echo $value;
 	}
 }
