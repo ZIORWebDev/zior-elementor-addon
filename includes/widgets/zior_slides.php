@@ -31,6 +31,10 @@ class ZIOR_Slides extends Widget_Base {
 		return [ 'slides', 'carousel', 'slider' ];
 	}
 
+	public function get_categories() {
+		return [ 'zior' ];
+	}
+
 	public function get_script_depends() {
 		$assets[] = [
 			'handle' => 'zior-slider',

@@ -1,4 +1,18 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+function zior_elementor_widget_categories( $elements ) {
+	$elements->add_category(
+		'zior', [
+			'title' => esc_html__( 'ZIOR Widgets', 'zior-elementor' ),
+			'icon' => 'fa fa-plug',
+		]
+	);
+}
+add_action( 'elementor/elements/categories_registered', 'zior_elementor_widget_categories' );
+
 function zior_register_elementor_widgets( $widgets ) {
 	spl_autoload_register( function ( $class ) {
 
