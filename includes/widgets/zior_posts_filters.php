@@ -30,24 +30,24 @@ class ZIOR_Posts_Filters extends Widget_Base {
 	}
 
 	public function get_script_depends() {
-		$assets = [
+		$assets = [ [
 			'handle' => 'posts-filter',
 			'type' => 'js',
 			'path' => ZIOR_PLUGIN_URL . 'assets/js/',
 			'name' => 'posts-filter',
 			'dependencies' => [ 'jquery' ],
-		];
+		] ];
 		zior_enqueue_assets( $assets );
 		return [ 'posts-filter' ];
 	}
 	
 	public function get_style_depends() {
-		$assets = [
+		$assets = [ [
 			'handle' => 'posts-filter',
 			'type' => 'css',
 			'path' => ZIOR_PLUGIN_URL . 'assets/css/',
 			'name' => 'posts-filter',
-		];
+		] ];
 		zior_enqueue_assets( $assets );
 		return [ 'posts-filter' ];
 	}
