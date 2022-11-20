@@ -25,10 +25,7 @@ function zior_frontend_scripts() {
 			'type' => 'css',
 			'path' => ZIOR_PLUGIN_URL . 'assets/css/',
 			'localize' => false,
-			'options' => [],
-			'name' => 'main',
-			'dependencies' => [],
-			'variable' => '',
+			'name' => 'main'
 		]
 	];
 
