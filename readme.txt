@@ -1,14 +1,14 @@
 === ZIOR Elementor Addon ===
 Contributors: reygcalantaol
-Tags: elementor posts, posts widget, advanced filter, custom slider
+Tags: custom slider, advanced filter, posts filter
 Requires at least: 4.9
 Tested up to: 6.1
-Stable tag: 0.1.3
+Stable tag: 0.1.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Custom addon for elementor and elementor pro plugins.
+Custom addon for elementor and elementor pro.
 
 == Description ==
 
@@ -20,8 +20,16 @@ Features
 * Ajax Search Filter for posts widget
 * Ajax Archive/Category Filter for posts widget 
 * Posts filter works on any posts widget skins
+* Advanced posts widget query filters
+* ACF Dynamic tags support
 
 == Changelog ==
+
+= 0.1.4 =
+Added ACF dynamic tags ( post object, page link, etc) support
+
+= 0.1.3 =
+Added advanced posts widget filter queries
 
 = 0.1.2 =
 Removed ajax template.

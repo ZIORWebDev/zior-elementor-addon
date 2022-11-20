@@ -203,7 +203,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('js', ['uglify']);
 	grunt.registerTask('default', ['js', 'css']);
 	grunt.registerTask('version_number', ['replace:readme', 'replace:php']);
-	grunt.registerTask('do_changelog', ['git_changelog']);
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
 	grunt.registerTask('do_svn', ['clean', 'copy', 'wp_deploy']);
