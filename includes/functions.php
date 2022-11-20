@@ -3,6 +3,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/*
+ * Enqueue assets
+ * 
+ * @param array $assets
+ * 
+ * @return void
+ */
 function zior_enqueue_assets( $assets ) {
 	foreach( $assets as $asset ) {
 		$is_dev = defined( 'ZIOR_DEV' ) && ZIOR_DEV ? true : false;
