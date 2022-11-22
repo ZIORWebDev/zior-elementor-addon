@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 			}
 		},
 		copy: {
-			main: {
+			release: {
 				src:  [
 					'**',
 					'!node_modules/**',
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
 					'!.gitignore',
 					'!.github',
 					'!README.md',
-					'!build',
+					'!build/**',
 					'!yarn.lock'
 				],
 				dest: 'release/'
@@ -206,5 +206,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('pre_vcs', ['version_number']);
 	grunt.registerTask('do_git', ['gitcommit', 'gittag', 'gitpush']);
 	grunt.registerTask('do_svn', ['clean', 'copy', 'wp_deploy']);
-	grunt.registerTask('release', ['default', 'pre_vcs', 'do_svn', 'do_git']);
+	grunt.registerTask('release', ['default', 'pre_vcs', 'do_svn', 'do_git', 'clean']);
 };
