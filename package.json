@@ -1,13 +1,14 @@
 {
   "name": "zr-elementor-addon",
   "title": "ZIOR Elementor Addon",
-  "description": "Plugin",
-  "version": "0.1.4",
+  "description": "Custom addon for elementor and elementor pro.",
+  "version": "0.1.5",
   "homepage": "https://ziorweb.dev",
   "author": {
     "name": "Reyborn Webservices",
     "url": "https://ziorweb.dev"
   },
+  "license": "GPL 2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Reyborn-Webservices/zr-elementor-addon.git"
