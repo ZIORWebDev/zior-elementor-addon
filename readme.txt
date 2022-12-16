@@ -12,9 +12,11 @@ Custom addon for elementor and elementor pro.
 
 == Description ==
 
-ZIOR Elementor Addon is a custom addon that allows ajax filter for posts widget. Filter options include filter by categories/taxonomies, custom post types, and archive dates and allow search widget results to be loaded in ajax and target specific posts widget in the page. The addon also includes custom slider.
+ZIOR Elementor Addon is a custom addon that allows an ajax filter for the posts widget. Filter options include filtering by categories/taxonomies, custom post types, and archive dates.
 
-Features
+The add-on gives developers the option to load filter results via ajax by targeting the specific posts widget on the page.
+
+FEATURES
 
 * Custom Swiper Slider
 * Ajax Search Filter for posts widget
