@@ -44,6 +44,7 @@ class ZIOR_Slides extends Widget_Base {
 			'dependencies' => [ 'jquery' ],
 		];
 		zior_enqueue_assets( $assets );
+		return [ 'zior-slider' ];
 	}
 	
 	public function get_style_depends() {
