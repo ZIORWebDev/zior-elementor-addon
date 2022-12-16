@@ -28,4 +28,4 @@ function zior_date_shortcode( $atts ) {
 		return date_i18n( $dateFormat );
 	}
 }
-add_shortcode( 'zior_current_date', array( $this, 'zior_date_shortcode' ) );
+add_shortcode( 'zior_current_date',  'zior_date_shortcode' );

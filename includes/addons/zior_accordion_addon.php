@@ -164,9 +164,6 @@ class ZIOR_Accordion_Addon {
 		$settings = $element->get_settings();
 
 		if ( 'accordion' === $element->get_name() && 'yes' === $settings['acs_enabled'] && ! empty( $settings['acs_post_type'] ) ) {
-			
-
-
 			$args = [
 				'post_type'      => $settings['acs_post_type'],
 				'post_status'    => 'publish',
@@ -185,7 +182,7 @@ class ZIOR_Accordion_Addon {
 			foreach( $data->posts as $post ) {
 				$tabs[] = [
 					'tab_title'   => get_the_title( $post ),
-					'tab_content' => get_the_content( $post ),
+					'tab_content' => apply_filters( 'the_content', $post->post_content ),
 					'_id'         => md5( $post->ID ),
 					'__dynamic__' => [],
 				];
