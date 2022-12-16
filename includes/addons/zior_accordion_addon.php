@@ -37,8 +37,8 @@ class ZIOR_Accordion_Addon {
 			[
 				'label'        => __( 'Enabled?', 'zior-elementor' ),
 				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => __( 'No', 'zior-elementor' ),
-				'label_off'    => __( 'Yes', 'zior-elementor' ),
+				'label_on'     => __( 'Yes', 'zior-elementor' ),
+				'label_off'    => __( 'No', 'zior-elementor' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
 				'render_type'  => 'template',
