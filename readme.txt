@@ -19,9 +19,9 @@ Features
 * Custom Swiper Slider
 * Ajax Search Filter for posts widget
 * Ajax Archive/Category Filter for posts widget 
-* Posts filter works on any posts widget skins
 * Advanced posts widget query filters
 * ACF Dynamic tags support
+* Post type support for accordion widget
 
 == Changelog ==
 
