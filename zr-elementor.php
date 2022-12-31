@@ -5,10 +5,10 @@
  * Plugin Name: ZIOR Elementor Addon
  * Description: Custom addon for elementor and elementor pro.
  * Version: 0.1.7
- * Author:      Rey Calantaol
+ * Author:      ZIORWeb.Dev
  * Author URI:  https://github.com/ziorweb-dev
- * License:     GPLv2 or later
- * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * License:     GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
  * Text Domain: zior-elementor
  * Requires at least: 4.9
  * Tested up to: 6.1
