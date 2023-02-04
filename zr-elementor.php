@@ -6,7 +6,7 @@
  * Description: Custom addon for elementor and elementor pro.
  * Version: 0.1.7
  * Author:      ZIORWeb.Dev
- * Author URI:  https://github.com/ziorweb-dev
+ * Author URI:  https://github.com/ZIORWebDev
  * License:     GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
  * Text Domain: zior-elementor
