@@ -25,6 +25,8 @@ FEATURES
 * ACF Dynamic tags support
 * Post type support for accordion widget
 
+Read documentation <a href="https://ziorweb.dev/docs/zior-elementor-addon" target="_blank">here</a>
+
 == Changelog ==
 
 = 0.1.6 =
